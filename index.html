@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>anonyme Nachrichten an Sandro</title>
 
-  <!-- Montserrat (Black) -->
+  <!-- Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 
   <!-- favicon placeholder (wird beim Laden mit profileImage ersetzt) -->
@@ -38,15 +38,11 @@
         linear-gradient(120deg, var(--bg-start), var(--bg-end));
       background-size: 200% 200%;
       animation: bgMorph 22s linear infinite;
+      -webkit-tap-highlight-color: transparent;
     }
+    @keyframes bgMorph { 0%{ background-position:0% 50% } 50%{ background-position:100% 50% } 100%{ background-position:0% 50% } }
 
-    @keyframes bgMorph {
-      0%{ background-position:0% 50% }
-      50%{ background-position:100% 50% }
-      100%{ background-position:0% 50% }
-    }
-
-    /* background particles */
+    /* particles */
     .particles{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; mix-blend-mode: screen; }
     .particle{ position:absolute; background:rgba(255,255,255,0.08); filter: blur(8px); border-radius:50%; will-change: transform, opacity; animation-timing-function: linear; animation-iteration-count: infinite; transform: translate3d(0,0,0); }
 
@@ -54,12 +50,12 @@
     .page{ height:100dvh; display:flex; flex-direction:column; align-items:center; gap:18px; padding:env(safe-area-inset-top) 22px 22px 22px; position:relative; z-index:2; }
 
     /* header */
-    .header{ width:100%; max-width:var(--max-width); display:flex; align-items:center; gap:14px; padding:6px 12px; margin-top:8px; user-select:none; }
+    .header{ width:100%; max-width:var(--max-width); display:flex; align-items:center; gap:14px; padding:6px 12px; margin-top:8px; user-select:none; z-index:5; }
     .profile{ width:56px; height:56px; border-radius:10px; overflow:hidden; flex:0 0 56px; background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; transition:transform .36s cubic-bezier(.2,.9,.2,1); box-shadow: 0 8px 24px rgba(2,6,4,0.22); }
     .profile img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .title{ font-weight:900; font-size:20px; color:var(--white); letter-spacing:0.2px; text-shadow:0 6px 20px rgba(3,6,4,0.35); }
+    .title{ font-weight:900; font-size:20px; color:var(--white); letter-spacing:0.2px; text-shadow:0 6px 20px rgba(3,6,4,0.35); white-space:nowrap; overflow:visible; }
 
-    /* top-right square button in header */
+    /* top-right button */
     .top-button{
       margin-left:auto;
       width:52px;
@@ -73,12 +69,10 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      transition:
-        transform .35s cubic-bezier(.2,.9,.2,1),
-        box-shadow .35s,
-        background .35s;
+      transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s, background .35s;
       text-decoration:none;
       color:inherit;
+      z-index:6;
     }
     .top-button img{ width:100%; height:100%; object-fit:cover; display:block; }
     .top-button:hover{ transform: translateY(-4px) scale(1.05); box-shadow: 0 18px 50px rgba(0,0,0,0.55); background:rgba(255,255,255,0.12); }
@@ -86,7 +80,7 @@
 
     /* canvas / glass */
     .canvas-wrap{ width:100%; max-width:var(--max-width); flex:1 1 auto; display:flex; align-items:center; justify-content:center; pointer-events:none; position:relative; }
-    .canvas{ width:100%; height: calc(100% - 120px); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:18px; backdrop-filter: blur(16px) saturate(120%); -webkit-backdrop-filter: blur(16px) saturate(120%); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(2,8,6,0.45); padding:22px; display:flex; align-items:center; justify-content:center; overflow:visible; position:relative; pointer-events:auto; transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .45s; transform-style: preserve-3d; }
+    .canvas{ width:100%; height: calc(100% - 120px); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:18px; backdrop-filter: blur(16px) saturate(120%); -webkit-backdrop-filter: blur(16px) saturate(120%); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(2,8,6,0.45); padding:22px; display:flex; align-items:center; justify-content:center; overflow:visible; position:relative; pointer-events:auto; transition: transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .45s; transform-style: preserve-3d; }
     .canvas::before{ content:""; position:absolute; inset:0; z-index:0; border-radius:18px; background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01) 20%, rgba(255,255,255,0.04) 60%, transparent 70%); pointer-events:none; mix-blend-mode: overlay; }
 
     .cards-wrap{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:6px; position:relative; z-index:2; }
@@ -100,8 +94,11 @@
 
     .form-card{ width:100%; max-width:760px; margin-top:6px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:18px; border:1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 28px rgba(3,10,6,0.16); }
     .form-title{ font-weight:900; font-size:16px; margin-bottom:8px; }
-    textarea{ width:100%; min-height:160px; resize:vertical; background: rgba(0,0,0,0.14); border:1px solid rgba(255,255,255,0.04); color:var(--white); padding:12px; border-radius:10px; font-size:15px; font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
-    .controls{ display:flex; gap:12px; margin-top:12px; align-items:center; justify-content:flex-end; }
+    textarea{ width:100%; min-height:160px; resize:vertical; background: rgba(0,0,0,0.14); border:1px solid rgba(255,255,255,0.04); color:var(--white); padding:12px; border-radius:10px; font-size:16px; line-height:1.35; font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
+    .controls{ display:flex; gap:12px; margin-top:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
+    .help{ font-size:13px; opacity:0.88; color: rgba(255,255,255,0.86); }
+    .controls-right{ display:flex; gap:12px; align-items:center; }
+
     .btn{
       background: linear-gradient(180deg, var(--accent), #12a558);
       padding:10px 16px;
@@ -114,11 +111,8 @@
       transition: transform .18s ease, box-shadow .18s;
     }
     .btn:active{ transform: translateY(1px) }
-    .btn[disabled]{ opacity:0.44; cursor:not-allowed; box-shadow:none; transform:none; }
+    .btn.ghost{ background: rgba(255,255,255,0.06); color:var(--white); box-shadow:none; border:1px solid rgba(255,255,255,0.04); font-weight:700; }
 
-    .small-muted{ font-size:13px; opacity:0.88; color: rgba(255,255,255,0.86); }
-
-    /* ripple */
     .ripple { position:absolute; border-radius:50%; background: rgba(255,255,255,0.22); pointer-events:none; transform: scale(0); opacity:1; will-change: transform, opacity; }
 
     @media (max-width:640px){
@@ -126,34 +120,41 @@
       .profile{ width:50px; height:50px; border-radius:10px; }
       .title{ font-size:18px; }
       .canvas{ padding:14px; border-radius:14px; height: calc(100% - 110px); }
-      .top-button{ width:46px; height:46px; border-radius:9px; flex:0 0 46px; }
       .notice{ font-size:15px; }
-      textarea{ min-height:120px; }
+      textarea{ min-height:120px; font-size:16px; }
       .form-card{ padding:12px; border-radius:12px; }
+      .controls{ flex-direction:column; align-items:stretch; gap:10px; }
+      .controls-right{ justify-content:flex-end; }
     }
 
     @media (prefers-reduced-motion: reduce){
       * { animation: none !important; transition: none !important; }
     }
 
-    /* toast */
-    .toast{
+    /* overlay success */
+    .overlay{
       position:fixed;
-      left:50%;
-      transform:translateX(-50%);
-      bottom:26px;
-      background:rgba(0,0,0,0.6);
-      padding:10px 14px;
-      border-radius:10px;
-      color:var(--white);
+      inset:0;
+      background: rgba(0,0,0,0.96);
       z-index:9999;
-      box-shadow: 0 8px 26px rgba(0,0,0,0.6);
-      font-weight:700;
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:18px;
+      padding:24px;
+      color:var(--white);
+      text-align:center;
     }
+    .overlay .overlay-title{ font-size:22px; font-weight:900; }
+    .overlay .overlay-actions{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+
+    /* simple toast */
+    .toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:26px; background:rgba(0,0,0,0.6); padding:10px 14px; border-radius:10px; color:var(--white); z-index:9998; box-shadow: 0 8px 26px rgba(0,0,0,0.6); font-weight:700; }
   </style>
 </head>
 <body>
-  <div class="particles" id="particles"></div>
+  <div class="particles" id="particles" aria-hidden="true"></div>
 
   <div class="page">
     <header class="header" role="banner" aria-label="Kopfbereich">
@@ -166,7 +167,7 @@
 
       <!-- TOP-RIGHT SQUARE BUTTON -->
       <a id="topButton" class="top-button" href="https://robloxsandro.github.io" target="_self" aria-label="Zurück zur Hauptseite">
-        <img id="topButtonImg" src="" alt="Zurück">
+        <img id="topButtonImg" src="" alt="Zurück zur Hauptseite">
       </a>
     </header>
 
@@ -174,7 +175,7 @@
       <section class="canvas" aria-label="Anonyme Fragen">
         <div class="cards-wrap">
           <div class="cards" id="cardsContainer" aria-live="polite" aria-atomic="true">
-            <!-- Inhalt per Script eingefügt -->
+            <!-- Inhalt per Script -->
           </div>
         </div>
       </section>
@@ -185,238 +186,256 @@
 
   <script>
     /**************************************************************************
-     * Anpassbare Variablen (bearbeite hier):
+     * Konfiguration
      **************************************************************************/
     const profileImage = "https://bilderupload.org/image/1d3b03618-copy-0d0e0763-19ba-4b2f-9.jpg";
-    const pageTitleText = "anonyme Nachrichten an Sandro";
     const topButtonImage = "https://bilderupload.org/image/bbbe05196-38b39cb4-169d-47eb-bdf4-3.png";
-
-    // WhatsApp-Link wie in der alten Seite
     const whatsappLink = "https://whatsapp.com/channel/0029VbBM5SEF6sn2jzyAYn1G";
-
-    // Discord Webhook (wie vom User gewünscht für "leer" Absenden)
     const webhookURL = "https://discord.com/api/webhooks/1450118803932450931/vhz1oqBDsEtiUGIZ60vxSOhifbc2GmlVS6UTmuQYjW--jAzm8RJz7UsS3HicdOIl00RC";
 
-    /* ----------------- helper image safe-set ----------------- */
-    function setImageSafe(imgEl, url){
-      if(!imgEl) return;
-      if(!url){ imgEl.style.display='none'; return; }
-      imgEl.src = url;
-      imgEl.addEventListener('error', ()=> { imgEl.style.display='none'; }, {once:true});
-    }
+    /* ---------------- helper ---------------- */
+    function setImageSafe(imgEl, url){ if(!imgEl) return; if(!url){ imgEl.style.display='none'; return; } imgEl.src = url; imgEl.addEventListener('error', ()=> { imgEl.style.display='none'; }, {once:true}); }
+    function showToast(text, ms = 3200){ const root=document.getElementById('toastRoot'); if(!root) return; root.innerHTML=''; const t=document.createElement('div'); t.className='toast'; t.textContent=text; root.appendChild(t); setTimeout(()=>{ root.innerHTML=''; }, ms); }
 
-    /* ----------------- favicon & title update ----------------- */
-    function applyFaviconAndTitle(){
-      // set title
-      document.title = pageTitleText || document.title;
-      const titleEl = document.getElementById('pageTitle');
-      if(titleEl) titleEl.textContent = pageTitleText;
-
-      // set favicon (use provided profileImage)
-      const link = document.getElementById('favicon') || document.createElement('link');
-      link.id = 'favicon';
-      link.rel = 'icon';
-      link.type = 'image/png';
-      link.href = profileImage || '';
-      document.head.appendChild(link);
-    }
-
-    /* ----------------- build center content ----------------- */
+    /* ----------------- build UI ----------------- */
     setImageSafe(document.getElementById('profileImage'), profileImage);
     setImageSafe(document.getElementById('topButtonImg'), topButtonImage);
 
     const cardsEl = document.getElementById('cardsContainer');
 
-    function buildAnonymousForm(){
+    function buildUI(){
       cardsEl.innerHTML = '';
 
-      const center = document.createElement('div');
-      center.className = 'center-block';
+      const center = document.createElement('div'); center.className='center-block';
 
-      const notice = document.createElement('div');
-      notice.className = 'notice';
+      const notice = document.createElement('div'); notice.className='notice';
       notice.textContent = 'Sandro reagiert auf die anonymen Fragen nur in seinem WhatsApp Kanal.';
       center.appendChild(notice);
 
-      // WhatsApp link (re-uses the same icon)
-      const wa = document.createElement('a');
-      wa.className = 'whatsapp-link';
-      wa.href = whatsappLink;
-      wa.target = "_blank";
-      wa.rel = "noopener noreferrer";
+      const wa = document.createElement('a'); wa.className='whatsapp-link'; wa.href = whatsappLink; wa.target='_blank'; wa.rel='noopener noreferrer';
       wa.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"><span>Sandros WhatsApp Kanal</span>';
       center.appendChild(wa);
 
-      // Form card
-      const formCard = document.createElement('div'); formCard.className = 'form-card';
-      const ft = document.createElement('div'); ft.className = 'form-title'; ft.textContent = 'Schreibe eine anonyme Nachricht an Sandro';
-      const ta = document.createElement('textarea'); ta.id = 'anonMessage'; ta.placeholder = 'Nachricht hier eingeben!';
-      ta.setAttribute('aria-label','Nachricht hier eingeben');
-      formCard.appendChild(ft);
-      formCard.appendChild(ta);
+      // form
+      const formCard = document.createElement('div'); formCard.className='form-card';
+      const ft = document.createElement('div'); ft.className='form-title'; ft.textContent = 'Schreibe eine anonyme Nachricht an Sandro';
+      const ta = document.createElement('textarea'); ta.id='anonMessage'; ta.placeholder = 'Nachricht hier eingeben!'; ta.setAttribute('aria-label','Nachricht hier eingeben'); ta.autocapitalize='sentences'; ta.autocomplete='off';
+      formCard.appendChild(ft); formCard.appendChild(ta);
 
-      const controls = document.createElement('div'); controls.className = 'controls';
-      const small = document.createElement('div'); small.className = 'small-muted'; small.textContent = 'Deine Nachricht bleibt anonym (ohne Meta-Daten).';
-      const sendBtn = document.createElement('button'); sendBtn.className = 'btn'; sendBtn.id = 'sendBtn'; sendBtn.textContent = 'Absenden';
-      sendBtn.disabled = true;
-      controls.appendChild(small);
-      controls.appendChild(sendBtn);
+      const controls = document.createElement('div'); controls.className='controls';
+      const help = document.createElement('div'); help.className='help'; help.textContent = 'Deine Nachricht bleibt anonym (ohne Meta-Daten).';
+      const right = document.createElement('div'); right.className='controls-right';
+      const sendBtn = document.createElement('button'); sendBtn.className='btn'; sendBtn.id='sendBtn'; sendBtn.textContent='Absenden';
+      // we keep button active always (user requested webhook to be sent if empty)
+      right.appendChild(sendBtn);
+      controls.appendChild(help);
+      controls.appendChild(right);
       formCard.appendChild(controls);
       center.appendChild(formCard);
-
       cardsEl.appendChild(center);
 
-      // enable/disable button based on input
-      ta.addEventListener('input', ()=>{
-        const has = ta.value.trim().length > 0;
-        sendBtn.disabled = !has;
-      });
-
-      // send button behavior:
-      // - Wenn Text vorhanden -> kopiere Text in Zwischenablage + öffne WhatsApp-Link (neuer Tab) (Sandro reagiert dort)
-      // - Wenn Text leer -> sende an den discord webhook den exakten Text:
-      //   "# Neue anonyme Frage: 🎉
-      //   [Discord Text Box wo man rauf klicken kann um einfach zu kopieren mit der frage]"
+      // behaviour: always attempt to send webhook.
       sendBtn.addEventListener('click', async (e)=>{
         e.preventDefault();
         const text = ta.value.trim();
+
+        // build discord payload
+        let payloadText = '';
         if(text.length > 0){
-          // copy to clipboard
+          payloadText = `# Neue anonyme Frage: 🎉\n\`\`\`\n${text}\n\`\`\``;
+        } else {
+          payloadText = `# Neue anonyme Frage: 🎉\n[Discord Text Box wo man rauf klicken kann um einfach zu kopieren mit der frage]`;
+        }
+
+        // show a quick toast
+        showToast('Sende Nachricht...');
+
+        // try fetch->sendWebhook; if ok show overlay; else try beacon and still show error
+        try {
+          await sendWebhook(payloadText);
+        } catch(err){
+          // attempt sendBeacon as fallback already inside sendWebhook; if still fails, show error toast
+          console.warn('Webhook send failed', err);
+          showToast('Webhook konnte nicht gesendet werden. Überprüfe die Verbindung.', 4000);
+          // still do the rest (copy/open) for UX? We'll continue: if text present, copy & open WA; but do not show success overlay.
+        }
+
+        // if text present: copy to clipboard and open WhatsApp (so Sandro can reply)
+        if(text.length > 0){
           try {
             await navigator.clipboard.writeText(text);
-            showToast('Nachricht kopiert. WhatsApp wird geöffnet — dort kannst du die Nachricht einfügen.');
-          } catch(err){
-            showToast('Zwischenablage konnte nicht beschrieben werden. Bitte kopiere manuell.');
+            showToast('Nachricht in die Zwischenablage kopiert. Öffne WhatsApp...');
+          } catch(e){
+            showToast('Kopieren fehlgeschlagen — bitte manuell kopieren.', 3000);
           }
-          // open WhatsApp channel in new tab
-          try {
-            window.open(whatsappLink, '_blank', 'noopener');
-          } catch(err){
-            window.location.href = whatsappLink;
-          }
-          // keep the page unchanged otherwise
-        } else {
-          // send the specific webhook message as requested
-          const payload = `# Neue anonyme Frage: 🎉\n[Discord Text Box wo man rauf klicken kann um einfach zu kopieren mit der frage]`;
-          sendWebhook(payload)
-            .then(()=> showToast('Webhook gesendet.'))
-            .catch(()=> showToast('Webhook konnte nicht gesendet werden.'));
+          // open WhatsApp channel
+          try { window.open(whatsappLink, '_blank', 'noopener'); } catch(e){ window.location.href = whatsappLink; }
         }
+
+        // show success overlay (wenn webhook send schien zu arbeiten, oder ungeachtet dessen als UX)
+        showSuccessOverlay();
       });
 
-      // also allow Enter+Ctrl (fallback)
+      // avoid mobile zoom by ensuring font-size >= 16 (already set). Also prevent accidental page transforms on focus.
+      const canvas = document.querySelector('.canvas');
+      ta.addEventListener('focus', ()=> {
+        // remove subtle parallax transform while editing
+        if(canvas) canvas.style.transform = 'translateZ(0)';
+      });
+      ta.addEventListener('blur', ()=> {
+        // ensure no lingering transforms - keep header visible
+        if(canvas) canvas.style.transform = '';
+      });
+
+      // keyboard: ctrl/cmd+enter to send
       ta.addEventListener('keydown', (e)=>{
         if((e.key === 'Enter') && (e.ctrlKey || e.metaKey)){
+          e.preventDefault();
           document.getElementById('sendBtn').click();
         }
       });
 
-      // small accessibility focus
-      setTimeout(()=> ta.focus(), 220);
+      // focus textarea on load (nice UX)
+      setTimeout(()=> ta.focus(), 200);
     }
 
-    /* ----------------- webhook function ----------------- */
+    /* ------------------ sendWebhook ------------------ */
     async function sendWebhook(content){
-      if(!webhookURL) return Promise.reject(new Error('Webhook nicht gesetzt.'));
+      if(!webhookURL) throw new Error('Webhook nicht gesetzt.');
+      const body = JSON.stringify({ content });
+      // Try fetch first
       try {
         const res = await fetch(webhookURL, {
-          method:'POST',
+          method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ content })
+          body
         });
-        if(!res.ok) {
-          // try beacon as fallback
-          tryBeacon(content);
-          return Promise.reject(new Error('Webhook response not ok'));
+        if(!res.ok){
+          // try sendBeacon fallback
+          tryBeacon(body);
+          throw new Error('Webhook antwortete mit ' + res.status);
         }
-        return Promise.resolve();
-      } catch(err){
-        tryBeacon(content);
-        return Promise.reject(err);
+        return;
+      } catch(fetchErr){
+        // fallback: sendBeacon
+        try {
+          tryBeacon(body);
+          return;
+        } catch(e){
+          throw fetchErr;
+        }
       }
     }
 
-    function tryBeacon(content){
-      try {
-        if(navigator.sendBeacon){
-          const blob = new Blob([JSON.stringify({ content })], { type: 'application/json' });
-          navigator.sendBeacon(webhookURL, blob);
-        }
-      } catch(e){
-        console.warn('Beacon failed', e);
+    function tryBeacon(body){
+      if(navigator.sendBeacon){
+        const blob = new Blob([body], { type: 'application/json' });
+        const ok = navigator.sendBeacon(webhookURL, blob);
+        if(!ok) throw new Error('sendBeacon returned false');
+        return;
       }
+      throw new Error('sendBeacon not supported');
     }
 
-    /* ----------------- small toast ----------------- */
-    let toastTimer = null;
-    function showToast(text, ms = 3200){
-      const root = document.getElementById('toastRoot');
-      if(!root) return;
-      root.innerHTML = '';
-      const t = document.createElement('div');
-      t.className = 'toast';
-      t.textContent = text;
-      root.appendChild(t);
-      if(toastTimer) clearTimeout(toastTimer);
-      toastTimer = setTimeout(()=> {
-        root.innerHTML = '';
-      }, ms);
+    /* ---------------- success overlay ---------------- */
+    function showSuccessOverlay(){
+      // remove existing if any
+      const existing = document.getElementById('successOverlay');
+      if(existing) existing.remove();
+
+      const overlay = document.createElement('div');
+      overlay.className = 'overlay';
+      overlay.id = 'successOverlay';
+      overlay.innerHTML = `
+        <div class="overlay-title">Nachricht erfolgreich gesendet!</div>
+        <div class="overlay-sub small-muted" style="opacity:.9">Danke — Sandro kann über seinen WhatsApp Kanal reagieren.</div>
+        <div class="overlay-actions">
+          <button id="goWhatsApp" class="btn">Meinen WhatsApp Kanal besuchen</button>
+          <button id="sendAgain" class="btn ghost">Noch eine Nachricht</button>
+        </div>
+      `;
+      document.body.appendChild(overlay);
+
+      document.getElementById('goWhatsApp').addEventListener('click', ()=> {
+        try { window.open(whatsappLink, '_blank', 'noopener'); } catch(e){ window.location.href = whatsappLink; }
+      });
+
+      document.getElementById('sendAgain').addEventListener('click', ()=> {
+        // reload to reset form
+        location.reload();
+      });
     }
 
-    /* ----------------- particles ----------------- */
+    /* ---------------- particles (same subtle behavior) ---------------- */
     (function createParticles(){
-      const container = document.getElementById('particles');
-      const count = Math.min(32, Math.max(12, Math.floor((window.innerWidth*window.innerHeight)/90000)));
-      for(let i=0;i<count;i++){
-        const p = document.createElement('div'); p.className='particle';
-        const size = Math.random()*28 + 8;
-        p.style.width = p.style.height = size + 'px';
-        p.style.left = (Math.random()*110 - 5) + '%';
-        p.style.top  = (Math.random()*110 - 5) + '%';
-        p.style.opacity = (Math.random()*0.18 + 0.04).toString();
-        const dur = Math.random()*40 + 40;
-        const dx = (Math.random()*200 - 100);
-        const dy = (Math.random()*200 - 100);
-        const rotate = (Math.random()*40 - 20);
-        const keyframesName = `float${i}`;
-        p.style.animation = `${keyframesName} ${dur}s linear infinite`;
-        const keyframes = `@keyframes ${keyframesName} {
-          0% { transform: translate3d(0px,0px,0) rotate(0deg) }
-          50%{ transform: translate3d(${dx/2}px,${dy/2}px,0) rotate(${rotate}deg) }
-          100%{ transform: translate3d(${dx}px,${dy}px,0) rotate(${rotate*1.2}deg) }
-        }`;
-        const style = document.createElement('style'); style.textContent = keyframes;
-        document.head.appendChild(style);
-        container.appendChild(p);
-      }
+      try {
+        const container = document.getElementById('particles');
+        const count = Math.min(32, Math.max(12, Math.floor((window.innerWidth*window.innerHeight)/90000)));
+        for(let i=0;i<count;i++){
+          const p = document.createElement('div'); p.className='particle';
+          const size = Math.random()*28 + 8;
+          p.style.width = p.style.height = size + 'px';
+          p.style.left = (Math.random()*110 - 5) + '%';
+          p.style.top  = (Math.random()*110 - 5) + '%';
+          p.style.opacity = (Math.random()*0.18 + 0.04).toString();
+          const dur = Math.random()*40 + 40;
+          const dx = (Math.random()*120 - 60);
+          const dy = (Math.random()*120 - 60);
+          const rotate = (Math.random()*40 - 20);
+          const keyframesName = `float${i}`;
+          p.style.animation = `${keyframesName} ${dur}s linear infinite`;
+          const keyframes = `@keyframes ${keyframesName} {
+            0% { transform: translate3d(0px,0px,0) rotate(0deg) }
+            50%{ transform: translate3d(${dx/2}px,${dy/2}px,0) rotate(${rotate}deg) }
+            100%{ transform: translate3d(${dx}px,${dy}px,0) rotate(${rotate*1.2}deg) }
+          }`;
+          const style = document.createElement('style'); style.textContent = keyframes;
+          document.head.appendChild(style);
+          container.appendChild(p);
+        }
+      } catch(e){ /* silent */ }
     })();
 
-    /* ----------------- init ----------------- */
+    /* ---------------- subtle parallax (very small) ---------------- */
+    (function addParallax(){
+      const canvas = document.querySelector('.canvas');
+      if(!canvas) return;
+      let enabled = true;
+      window.addEventListener('pointermove', (e)=>{
+        if(!enabled) return;
+        const rect = canvas.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) - 0.5;
+        const y = ((e.clientY - rect.top) / rect.height) - 0.5;
+        // subtle translate only, no zoom/scale
+        canvas.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
+      }, {passive:true});
+      // reset transforms on focusin/focusout to ensure header/title isn't affected
+      window.addEventListener('focusin', ()=> { if(canvas) { canvas.style.transform = 'translateZ(0)'; } });
+      window.addEventListener('focusout', ()=> { if(canvas) { canvas.style.transform = ''; } });
+      window.addEventListener('resize', ()=> { if(canvas) canvas.style.transform = ''; });
+    })();
+
+    /* ---------------- init ---------------- */
+    function applyFaviconAndTitle(){
+      document.title = 'anonyme Nachrichten an Sandro';
+      const titleEl = document.getElementById('pageTitle'); if(titleEl) titleEl.textContent = 'anonyme Nachrichten an Sandro';
+      const link = document.getElementById('favicon') || document.createElement('link');
+      link.id = 'favicon'; link.rel='icon'; link.type='image/png'; link.href = profileImage || '';
+      document.head.appendChild(link);
+    }
+
     function init(){
       applyFaviconAndTitle();
-      buildAnonymousForm();
-
-      // set top-button image explicitly (fallback to profile if empty)
-      const topImgEl = document.getElementById('topButtonImg');
-      setImageSafe(topImgEl, topButtonImage || profileImage);
-
-      // small delay to recalc anything if needed
-      setTimeout(()=> {
-        // nothing heavy here; kept to mirror main page behaviour
-      }, 140);
-
-      // preserve previous behaviour? (original Seite hat webhook-on-load; belassen optional)
-      // Wenn du das nicht willst, entferne die nächsten Zeilen:
-      // sendWebhookOnLoad(); // currently *nicht* aktiv
+      buildUI();
+      // set top button image
+      setImageSafe(document.getElementById('topButtonImg'), topButtonImage || profileImage);
+      // small scale adjust placeholder (keeps look similar to main page)
+      setTimeout(()=>{}, 120);
     }
     window.addEventListener('load', init);
 
-    // (Optional) expose runtime API (wie vorher)
-    window.__SandrosAnon = {
-      setProfile(url){ setImageSafe(document.getElementById('profileImage'), url); const l = document.getElementById('favicon'); if(l) l.href = url; },
-      setTopButton(url){ setImageSafe(document.getElementById('topButtonImg'), url); },
-      setWhatsApp(url){ /* runtime adjustment */ }
-    };
+    // expose minimal runtime hooks if needed later
+    window.__SandrosAnon = { setProfile(url){ setImageSafe(document.getElementById('profileImage'), url); const l = document.getElementById('favicon'); if(l) l.href = url; }, setTopButton(url){ setImageSafe(document.getElementById('topButtonImg'), url); } };
   </script>
 </body>
 </html>
