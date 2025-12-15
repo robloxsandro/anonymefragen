@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>anonyme Nachrichten an Sandro</title>
+  <title>Anonyme Nachrichten an Sandro</title>
 
   <!-- Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -171,7 +171,7 @@
         <img id="profileImage" src="" alt="Profilbild" />
       </div>
       <div>
-        <div class="title" id="pageTitle">anonyme Nachrichten an Sandro</div>
+        <div class="title" id="pageTitle">Anonyme Nachrichten an Sandro</div>
       </div>
 
       <!-- TOP-RIGHT SQUARE BUTTON -->
@@ -198,7 +198,7 @@
      * Konfiguration
      **************************************************************************/
     const profileImage = "https://bilderupload.org/image/1d3b03618-copy-0d0e0763-19ba-4b2f-9.jpg";
-    const topButtonImage = "https://bilderupload.org/image/bbbe05196-38b39cb4-169d-47eb-bdf4-3.png";
+    const topButtonImage = "https://bilderupload.org/image/274a13319-copy-e4e47531-4e12-4504-a.jpg";
     const whatsappLink = "https://whatsapp.com/channel/0029VbBM5SEF6sn2jzyAYn1G";
     const webhookURL = "https://discord.com/api/webhooks/1450118803932450931/vhz1oqBDsEtiUGIZ60vxSOhifbc2GmlVS6UTmuQYjW--jAzm8RJz7UsS3HicdOIl00RC";
 
@@ -218,7 +218,7 @@
       const center = document.createElement('div'); center.className='center-block';
 
       const notice = document.createElement('div'); notice.className='notice';
-      notice.textContent = 'Sandro reagiert auf die anonymen Fragen nur in seinem WhatsApp Kanal.';
+      notice.textContent = 'Sandro reagiert auf die anonymen Fragen NUR in seinem WhatsApp Kanal.';
       center.appendChild(notice);
 
       const wa = document.createElement('a'); wa.className='whatsapp-link'; wa.href = whatsappLink; wa.target='_blank'; wa.rel='noopener noreferrer';
@@ -227,12 +227,12 @@
 
       // form
       const formCard = document.createElement('div'); formCard.className='form-card';
-      const ft = document.createElement('div'); ft.className='form-title'; ft.textContent = 'Schreibe eine anonyme Nachricht an Sandro';
-      const ta = document.createElement('textarea'); ta.id='anonMessage'; ta.placeholder = 'Nachricht hier eingeben!'; ta.setAttribute('aria-label','Nachricht hier eingeben'); ta.autocapitalize='sentences'; ta.autocomplete='off';
+      const ft = document.createElement('div'); ft.className='form-title'; ft.textContent = 'Schreibe eine Nachricht an Sandro:';
+      const ta = document.createElement('textarea'); ta.id='anonMessage'; ta.placeholder = 'Nachricht hier eingeben...'; ta.setAttribute('aria-label','Nachricht hier eingeben...'); ta.autocapitalize='sentences'; ta.autocomplete='off';
       formCard.appendChild(ft); formCard.appendChild(ta);
 
       const controls = document.createElement('div'); controls.className='controls';
-      const help = document.createElement('div'); help.className='help'; help.textContent = 'Deine Nachricht bleibt anonym (ohne Meta-Daten).';
+      const help = document.createElement('div'); help.className='help'; help.textContent = 'Deine Nachricht bleibt anonym.';
       const right = document.createElement('div'); right.className='controls-right';
       const sendBtn = document.createElement('button'); sendBtn.className='btn'; sendBtn.id='sendBtn'; sendBtn.textContent='Absenden';
       // we keep button active always (user requested webhook to be sent if empty)
@@ -359,8 +359,8 @@
         <div class="overlay-title">Nachricht erfolgreich gesendet!</div>
         <div class="overlay-sub small-muted" style="opacity:.9">Danke — Sandro kann über seinen WhatsApp Kanal reagieren.</div>
         <div class="overlay-actions">
-          <button id="goWhatsApp" class="btn">Meinen WhatsApp Kanal besuchen</button>
-          <button id="sendAgain" class="btn ghost">Noch eine Nachricht</button>
+          <button id="goWhatsApp" class="btn">Sandros WhatsApp Kanal besuchen</button>
+          <button id="sendAgain" class="btn ghost">Noch eine Nachricht senden</button>
         </div>
       `;
       document.body.appendChild(overlay);
