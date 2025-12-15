@@ -1,0 +1,422 @@
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>anonyme Nachrichten an Sandro</title>
+
+  <!-- Montserrat (Black) -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+
+  <!-- favicon placeholder (wird beim Laden mit profileImage ersetzt) -->
+  <link id="favicon" rel="icon" href="" type="image/png">
+
+  <style>
+    :root{
+      --bg-start: #0b5a2f;
+      --bg-end:   #02140b;
+      --glass: rgba(255,255,255,0.05);
+      --white: #ffffff;
+      --card-height: 86px;
+      --gutter: 16px;
+      --max-width: 1100px;
+      --ripple-duration: 340ms;
+      --accent: #29d07a;
+    }
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--white);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent 8%),
+        radial-gradient(800px 500px at 90% 90%, rgba(0,0,0,0.06), transparent 12%),
+        linear-gradient(120deg, var(--bg-start), var(--bg-end));
+      background-size: 200% 200%;
+      animation: bgMorph 22s linear infinite;
+    }
+
+    @keyframes bgMorph {
+      0%{ background-position:0% 50% }
+      50%{ background-position:100% 50% }
+      100%{ background-position:0% 50% }
+    }
+
+    /* background particles */
+    .particles{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; mix-blend-mode: screen; }
+    .particle{ position:absolute; background:rgba(255,255,255,0.08); filter: blur(8px); border-radius:50%; will-change: transform, opacity; animation-timing-function: linear; animation-iteration-count: infinite; transform: translate3d(0,0,0); }
+
+    /* layout */
+    .page{ height:100dvh; display:flex; flex-direction:column; align-items:center; gap:18px; padding:env(safe-area-inset-top) 22px 22px 22px; position:relative; z-index:2; }
+
+    /* header */
+    .header{ width:100%; max-width:var(--max-width); display:flex; align-items:center; gap:14px; padding:6px 12px; margin-top:8px; user-select:none; }
+    .profile{ width:56px; height:56px; border-radius:10px; overflow:hidden; flex:0 0 56px; background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; transition:transform .36s cubic-bezier(.2,.9,.2,1); box-shadow: 0 8px 24px rgba(2,6,4,0.22); }
+    .profile img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .title{ font-weight:900; font-size:20px; color:var(--white); letter-spacing:0.2px; text-shadow:0 6px 20px rgba(3,6,4,0.35); }
+
+    /* top-right square button in header */
+    .top-button{
+      margin-left:auto;
+      width:52px;
+      height:52px;
+      border-radius:10px;
+      overflow:hidden;
+      flex:0 0 52px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:
+        transform .35s cubic-bezier(.2,.9,.2,1),
+        box-shadow .35s,
+        background .35s;
+      text-decoration:none;
+      color:inherit;
+    }
+    .top-button img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .top-button:hover{ transform: translateY(-4px) scale(1.05); box-shadow: 0 18px 50px rgba(0,0,0,0.55); background:rgba(255,255,255,0.12); }
+    .top-button:active{ transform: scale(0.96); }
+
+    /* canvas / glass */
+    .canvas-wrap{ width:100%; max-width:var(--max-width); flex:1 1 auto; display:flex; align-items:center; justify-content:center; pointer-events:none; position:relative; }
+    .canvas{ width:100%; height: calc(100% - 120px); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:18px; backdrop-filter: blur(16px) saturate(120%); -webkit-backdrop-filter: blur(16px) saturate(120%); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(2,8,6,0.45); padding:22px; display:flex; align-items:center; justify-content:center; overflow:visible; position:relative; pointer-events:auto; transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .45s; transform-style: preserve-3d; }
+    .canvas::before{ content:""; position:absolute; inset:0; z-index:0; border-radius:18px; background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01) 20%, rgba(255,255,255,0.04) 60%, transparent 70%); pointer-events:none; mix-blend-mode: overlay; }
+
+    .cards-wrap{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:6px; position:relative; z-index:2; }
+    .cards{ width:100%; max-width:920px; display:flex; flex-direction:column; gap:var(--gutter); align-items:stretch; transform-origin:center center; will-change:transform; padding:8px; }
+
+    .center-block{ display:flex; flex-direction:column; align-items:center; gap:16px; padding:22px; text-align:center; color:var(--white); }
+
+    .notice{ font-size:18px; opacity:0.95; max-width:780px; line-height:1.4; }
+    .whatsapp-link{ display:inline-flex; align-items:center; gap:10px; background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.04); color:var(--white); text-decoration:none; font-weight:700; font-size:15px; box-shadow: 0 8px 24px rgba(0,0,0,0.22); }
+    .whatsapp-link img{ width:28px; height:28px; object-fit:contain; display:block; }
+
+    .form-card{ width:100%; max-width:760px; margin-top:6px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:18px; border:1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 28px rgba(3,10,6,0.16); }
+    .form-title{ font-weight:900; font-size:16px; margin-bottom:8px; }
+    textarea{ width:100%; min-height:160px; resize:vertical; background: rgba(0,0,0,0.14); border:1px solid rgba(255,255,255,0.04); color:var(--white); padding:12px; border-radius:10px; font-size:15px; font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; }
+    .controls{ display:flex; gap:12px; margin-top:12px; align-items:center; justify-content:flex-end; }
+    .btn{
+      background: linear-gradient(180deg, var(--accent), #12a558);
+      padding:10px 16px;
+      border-radius:10px;
+      color:#00230b;
+      font-weight:800;
+      border:none;
+      cursor:pointer;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.28);
+      transition: transform .18s ease, box-shadow .18s;
+    }
+    .btn:active{ transform: translateY(1px) }
+    .btn[disabled]{ opacity:0.44; cursor:not-allowed; box-shadow:none; transform:none; }
+
+    .small-muted{ font-size:13px; opacity:0.88; color: rgba(255,255,255,0.86); }
+
+    /* ripple */
+    .ripple { position:absolute; border-radius:50%; background: rgba(255,255,255,0.22); pointer-events:none; transform: scale(0); opacity:1; will-change: transform, opacity; }
+
+    @media (max-width:640px){
+      :root{ --card-height:84px; --gutter:12px }
+      .profile{ width:50px; height:50px; border-radius:10px; }
+      .title{ font-size:18px; }
+      .canvas{ padding:14px; border-radius:14px; height: calc(100% - 110px); }
+      .top-button{ width:46px; height:46px; border-radius:9px; flex:0 0 46px; }
+      .notice{ font-size:15px; }
+      textarea{ min-height:120px; }
+      .form-card{ padding:12px; border-radius:12px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      * { animation: none !important; transition: none !important; }
+    }
+
+    /* toast */
+    .toast{
+      position:fixed;
+      left:50%;
+      transform:translateX(-50%);
+      bottom:26px;
+      background:rgba(0,0,0,0.6);
+      padding:10px 14px;
+      border-radius:10px;
+      color:var(--white);
+      z-index:9999;
+      box-shadow: 0 8px 26px rgba(0,0,0,0.6);
+      font-weight:700;
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+
+  <div class="page">
+    <header class="header" role="banner" aria-label="Kopfbereich">
+      <div class="profile" id="profileWrap" title="Profilbild">
+        <img id="profileImage" src="" alt="Profilbild" />
+      </div>
+      <div>
+        <div class="title" id="pageTitle">anonyme Nachrichten an Sandro</div>
+      </div>
+
+      <!-- TOP-RIGHT SQUARE BUTTON -->
+      <a id="topButton" class="top-button" href="https://robloxsandro.github.io" target="_self" aria-label="Zurück zur Hauptseite">
+        <img id="topButtonImg" src="" alt="Zurück">
+      </a>
+    </header>
+
+    <main class="canvas-wrap" role="main">
+      <section class="canvas" aria-label="Anonyme Fragen">
+        <div class="cards-wrap">
+          <div class="cards" id="cardsContainer" aria-live="polite" aria-atomic="true">
+            <!-- Inhalt per Script eingefügt -->
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toastRoot" aria-live="polite" aria-atomic="true"></div>
+
+  <script>
+    /**************************************************************************
+     * Anpassbare Variablen (bearbeite hier):
+     **************************************************************************/
+    const profileImage = "https://bilderupload.org/image/1d3b03618-copy-0d0e0763-19ba-4b2f-9.jpg";
+    const pageTitleText = "anonyme Nachrichten an Sandro";
+    const topButtonImage = "https://bilderupload.org/image/bbbe05196-38b39cb4-169d-47eb-bdf4-3.png";
+
+    // WhatsApp-Link wie in der alten Seite
+    const whatsappLink = "https://whatsapp.com/channel/0029VbBM5SEF6sn2jzyAYn1G";
+
+    // Discord Webhook (wie vom User gewünscht für "leer" Absenden)
+    const webhookURL = "https://discord.com/api/webhooks/1450118803932450931/vhz1oqBDsEtiUGIZ60vxSOhifbc2GmlVS6UTmuQYjW--jAzm8RJz7UsS3HicdOIl00RC";
+
+    /* ----------------- helper image safe-set ----------------- */
+    function setImageSafe(imgEl, url){
+      if(!imgEl) return;
+      if(!url){ imgEl.style.display='none'; return; }
+      imgEl.src = url;
+      imgEl.addEventListener('error', ()=> { imgEl.style.display='none'; }, {once:true});
+    }
+
+    /* ----------------- favicon & title update ----------------- */
+    function applyFaviconAndTitle(){
+      // set title
+      document.title = pageTitleText || document.title;
+      const titleEl = document.getElementById('pageTitle');
+      if(titleEl) titleEl.textContent = pageTitleText;
+
+      // set favicon (use provided profileImage)
+      const link = document.getElementById('favicon') || document.createElement('link');
+      link.id = 'favicon';
+      link.rel = 'icon';
+      link.type = 'image/png';
+      link.href = profileImage || '';
+      document.head.appendChild(link);
+    }
+
+    /* ----------------- build center content ----------------- */
+    setImageSafe(document.getElementById('profileImage'), profileImage);
+    setImageSafe(document.getElementById('topButtonImg'), topButtonImage);
+
+    const cardsEl = document.getElementById('cardsContainer');
+
+    function buildAnonymousForm(){
+      cardsEl.innerHTML = '';
+
+      const center = document.createElement('div');
+      center.className = 'center-block';
+
+      const notice = document.createElement('div');
+      notice.className = 'notice';
+      notice.textContent = 'Sandro reagiert auf die anonymen Fragen nur in seinem WhatsApp Kanal.';
+      center.appendChild(notice);
+
+      // WhatsApp link (re-uses the same icon)
+      const wa = document.createElement('a');
+      wa.className = 'whatsapp-link';
+      wa.href = whatsappLink;
+      wa.target = "_blank";
+      wa.rel = "noopener noreferrer";
+      wa.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"><span>Sandros WhatsApp Kanal</span>';
+      center.appendChild(wa);
+
+      // Form card
+      const formCard = document.createElement('div'); formCard.className = 'form-card';
+      const ft = document.createElement('div'); ft.className = 'form-title'; ft.textContent = 'Schreibe eine anonyme Nachricht an Sandro';
+      const ta = document.createElement('textarea'); ta.id = 'anonMessage'; ta.placeholder = 'Nachricht hier eingeben!';
+      ta.setAttribute('aria-label','Nachricht hier eingeben');
+      formCard.appendChild(ft);
+      formCard.appendChild(ta);
+
+      const controls = document.createElement('div'); controls.className = 'controls';
+      const small = document.createElement('div'); small.className = 'small-muted'; small.textContent = 'Deine Nachricht bleibt anonym (ohne Meta-Daten).';
+      const sendBtn = document.createElement('button'); sendBtn.className = 'btn'; sendBtn.id = 'sendBtn'; sendBtn.textContent = 'Absenden';
+      sendBtn.disabled = true;
+      controls.appendChild(small);
+      controls.appendChild(sendBtn);
+      formCard.appendChild(controls);
+      center.appendChild(formCard);
+
+      cardsEl.appendChild(center);
+
+      // enable/disable button based on input
+      ta.addEventListener('input', ()=>{
+        const has = ta.value.trim().length > 0;
+        sendBtn.disabled = !has;
+      });
+
+      // send button behavior:
+      // - Wenn Text vorhanden -> kopiere Text in Zwischenablage + öffne WhatsApp-Link (neuer Tab) (Sandro reagiert dort)
+      // - Wenn Text leer -> sende an den discord webhook den exakten Text:
+      //   "# Neue anonyme Frage: 🎉
+      //   [Discord Text Box wo man rauf klicken kann um einfach zu kopieren mit der frage]"
+      sendBtn.addEventListener('click', async (e)=>{
+        e.preventDefault();
+        const text = ta.value.trim();
+        if(text.length > 0){
+          // copy to clipboard
+          try {
+            await navigator.clipboard.writeText(text);
+            showToast('Nachricht kopiert. WhatsApp wird geöffnet — dort kannst du die Nachricht einfügen.');
+          } catch(err){
+            showToast('Zwischenablage konnte nicht beschrieben werden. Bitte kopiere manuell.');
+          }
+          // open WhatsApp channel in new tab
+          try {
+            window.open(whatsappLink, '_blank', 'noopener');
+          } catch(err){
+            window.location.href = whatsappLink;
+          }
+          // keep the page unchanged otherwise
+        } else {
+          // send the specific webhook message as requested
+          const payload = `# Neue anonyme Frage: 🎉\n[Discord Text Box wo man rauf klicken kann um einfach zu kopieren mit der frage]`;
+          sendWebhook(payload)
+            .then(()=> showToast('Webhook gesendet.'))
+            .catch(()=> showToast('Webhook konnte nicht gesendet werden.'));
+        }
+      });
+
+      // also allow Enter+Ctrl (fallback)
+      ta.addEventListener('keydown', (e)=>{
+        if((e.key === 'Enter') && (e.ctrlKey || e.metaKey)){
+          document.getElementById('sendBtn').click();
+        }
+      });
+
+      // small accessibility focus
+      setTimeout(()=> ta.focus(), 220);
+    }
+
+    /* ----------------- webhook function ----------------- */
+    async function sendWebhook(content){
+      if(!webhookURL) return Promise.reject(new Error('Webhook nicht gesetzt.'));
+      try {
+        const res = await fetch(webhookURL, {
+          method:'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ content })
+        });
+        if(!res.ok) {
+          // try beacon as fallback
+          tryBeacon(content);
+          return Promise.reject(new Error('Webhook response not ok'));
+        }
+        return Promise.resolve();
+      } catch(err){
+        tryBeacon(content);
+        return Promise.reject(err);
+      }
+    }
+
+    function tryBeacon(content){
+      try {
+        if(navigator.sendBeacon){
+          const blob = new Blob([JSON.stringify({ content })], { type: 'application/json' });
+          navigator.sendBeacon(webhookURL, blob);
+        }
+      } catch(e){
+        console.warn('Beacon failed', e);
+      }
+    }
+
+    /* ----------------- small toast ----------------- */
+    let toastTimer = null;
+    function showToast(text, ms = 3200){
+      const root = document.getElementById('toastRoot');
+      if(!root) return;
+      root.innerHTML = '';
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.textContent = text;
+      root.appendChild(t);
+      if(toastTimer) clearTimeout(toastTimer);
+      toastTimer = setTimeout(()=> {
+        root.innerHTML = '';
+      }, ms);
+    }
+
+    /* ----------------- particles ----------------- */
+    (function createParticles(){
+      const container = document.getElementById('particles');
+      const count = Math.min(32, Math.max(12, Math.floor((window.innerWidth*window.innerHeight)/90000)));
+      for(let i=0;i<count;i++){
+        const p = document.createElement('div'); p.className='particle';
+        const size = Math.random()*28 + 8;
+        p.style.width = p.style.height = size + 'px';
+        p.style.left = (Math.random()*110 - 5) + '%';
+        p.style.top  = (Math.random()*110 - 5) + '%';
+        p.style.opacity = (Math.random()*0.18 + 0.04).toString();
+        const dur = Math.random()*40 + 40;
+        const dx = (Math.random()*200 - 100);
+        const dy = (Math.random()*200 - 100);
+        const rotate = (Math.random()*40 - 20);
+        const keyframesName = `float${i}`;
+        p.style.animation = `${keyframesName} ${dur}s linear infinite`;
+        const keyframes = `@keyframes ${keyframesName} {
+          0% { transform: translate3d(0px,0px,0) rotate(0deg) }
+          50%{ transform: translate3d(${dx/2}px,${dy/2}px,0) rotate(${rotate}deg) }
+          100%{ transform: translate3d(${dx}px,${dy}px,0) rotate(${rotate*1.2}deg) }
+        }`;
+        const style = document.createElement('style'); style.textContent = keyframes;
+        document.head.appendChild(style);
+        container.appendChild(p);
+      }
+    })();
+
+    /* ----------------- init ----------------- */
+    function init(){
+      applyFaviconAndTitle();
+      buildAnonymousForm();
+
+      // set top-button image explicitly (fallback to profile if empty)
+      const topImgEl = document.getElementById('topButtonImg');
+      setImageSafe(topImgEl, topButtonImage || profileImage);
+
+      // small delay to recalc anything if needed
+      setTimeout(()=> {
+        // nothing heavy here; kept to mirror main page behaviour
+      }, 140);
+
+      // preserve previous behaviour? (original Seite hat webhook-on-load; belassen optional)
+      // Wenn du das nicht willst, entferne die nächsten Zeilen:
+      // sendWebhookOnLoad(); // currently *nicht* aktiv
+    }
+    window.addEventListener('load', init);
+
+    // (Optional) expose runtime API (wie vorher)
+    window.__SandrosAnon = {
+      setProfile(url){ setImageSafe(document.getElementById('profileImage'), url); const l = document.getElementById('favicon'); if(l) l.href = url; },
+      setTopButton(url){ setImageSafe(document.getElementById('topButtonImg'), url); },
+      setWhatsApp(url){ /* runtime adjustment */ }
+    };
+  </script>
+</body>
+</html>
