@@ -1,279 +1,500 @@
 <!doctype html>
 <html lang="de">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Anonyme Fragen an Sandro</title>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+  <title>Anonyme Fragen an Sandro</title>
 
-<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
-<link id="favicon" rel="icon" href="" type="image/png">
+  <!-- Montserrat -->
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
 
-<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
+  <!-- favicon placeholder (wird beim Laden mit profileImage ersetzt) -->
+  <link id="favicon" rel="icon" href="" type="image/png">
 
-<style>
-:root{
-  --bg-start:#0b5a2f;
-  --bg-end:#02140b;
-  --white:#fff;
-  --accent:#29d07a;
-}
-*{box-sizing:border-box}
-html,body{
-  margin:0;height:100%;
-  font-family:Montserrat,system-ui;
-  color:var(--white);
-  background:
-    radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,.02), transparent),
-    linear-gradient(120deg,var(--bg-start),var(--bg-end));
-  animation:bgMorph 22s linear infinite;
-  overflow:hidden;
-}
-@keyframes bgMorph{
-  0%{background-position:0% 50%}
-  50%{background-position:100% 50%}
-  100%{background-position:0% 50%}
-}
+  <!-- Cloudflare Turnstile -->
+  <script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-.particles{position:fixed;inset:0;pointer-events:none;z-index:0}
-.particle{position:absolute;background:rgba(255,255,255,.08);border-radius:50%;filter:blur(8px)}
-
-.page{
-  height:100dvh;
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  padding:22px;
-  position:relative;
-  z-index:2;
-}
-
-.header{
-  width:100%;
-  max-width:1100px;
-  display:flex;
-  align-items:center;
-  gap:14px;
-}
-.profile{
-  width:56px;height:56px;
-  border-radius:10px;
-  overflow:hidden;
-}
-.profile img{width:100%;height:100%;object-fit:cover}
-.title{font-weight:900;font-size:20px}
-
-.top-button{
-  margin-left:auto;
-  width:52px;height:52px;
-  border-radius:10px;
-  overflow:hidden;
-}
-.top-button img{width:100%;height:100%;object-fit:cover}
-
-.canvas-wrap{
-  flex:1;
-  width:100%;
-  max-width:1100px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-}
-.canvas{
-  width:100%;
-  height:calc(100% - 120px);
-  background:rgba(255,255,255,.04);
-  border-radius:18px;
-  backdrop-filter:blur(16px);
-  padding:22px;
-  display:flex;
-  justify-content:center;
-  align-items:center;
-}
-
-.form-card{
-  width:100%;
-  max-width:720px;
-  background:rgba(255,255,255,.04);
-  border-radius:14px;
-  padding:18px;
-  display:flex;
-  flex-direction:column;
-  gap:14px;
-}
-
-.form-title{font-weight:900;font-size:18px;margin-bottom:10px}
-.hint{font-size:13px;opacity:.9;margin-bottom:12px}
-
-textarea{
-  width:100%;
-  min-height:150px;
-  border-radius:12px;
-  border:none;
-  padding:14px;
-  font-size:16px;
-  background:rgba(0,0,0,.2);
-  color:#fff;
-}
-
-.controls{
-  display:flex;
-  justify-content:flex-end;
-  margin-top:10px;
-}
-
-button{
-  padding:12px 18px;
-  border-radius:12px;
-  border:none;
-  font-weight:800;
-  background:var(--accent);
-  cursor:pointer;
-}
-button:disabled{
-  background:rgba(255,255,255,.15);
-  color:rgba(255,255,255,.6);
-  cursor:not-allowed;
-}
-
-.toast{
-  position:fixed;
-  bottom:20px;
-  left:50%;
-  transform:translateX(-50%);
-  background:rgba(0,0,0,.7);
-  padding:12px 16px;
-  border-radius:12px;
-  font-weight:700;
-  z-index:50;
-}
-
-.overlay{
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.85);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  z-index:60;
-}
-.overlay .card{
-  background:#111;
-  padding:22px;
-  border-radius:14px;
-  text-align:center;
-}
-</style>
-</head>
-
-<body>
-<div class="particles" id="particles"></div>
-
-<div class="page">
-<header class="header">
-  <div class="profile">
-    <img src="https://bilderupload.org/image/1d3b03618-copy-0d0e0763-19ba-4b2f-9.jpg">
-  </div>
-  <div class="title">Anonyme Fragen an Sandro</div>
-  <a class="top-button" href="https://robloxsandro.github.io">
-    <img src="https://bilderupload.org/image/2d4011221-copy-822f22bb-b2d7-4475-a.jpg">
-  </a>
-</header>
-
-<main class="canvas-wrap">
-<section class="canvas">
-<div class="form-card">
-  <div class="form-title">Anonyme Nachricht</div>
-  <div class="hint">Schreibe eine kurze Nachricht an Sandro. Nur WhatsApp-Kanal wird angeboten.</div>
-
-  <a href="https://whatsapp.com/channel/0029VbBM5SEF6sn2jzyAYn1G"
-     target="_blank"
-     style="color:#4da3ff;font-size:13px;font-weight:700;text-decoration:none">
-     → Sandros WhatsApp Kanal besuchen
-  </a>
-
-  <textarea id="msg" placeholder="Deine Nachricht hier eingeben..."></textarea>
-
-  <div id="captcha"></div>
-
-  <div class="controls">
-    <button id="send" style="display:none">Absenden</button>
-  </div>
-</div>
-</section>
-</main>
-</div>
-
-<script>
-const WORKER_URL='https://anonymefragen.sandrorobloxcreations.workers.dev';
-const SITE_KEY='0x4AAAAAACG_VpwEjC-i_bxF';
-const WHATSAPP='https://whatsapp.com/channel/0029VbBM5SEF6sn2jzyAYn1G';
-
-let token=null,sending=false,widgetId=null;
-
-function toast(t){
-  const d=document.createElement('div');
-  d.className='toast';d.textContent=t;
-  document.body.appendChild(d);
-  setTimeout(()=>d.remove(),3000);
-}
-
-function renderCaptcha(){
-  widgetId=turnstile.render('#captcha',{
-    sitekey:SITE_KEY,
-    theme:'dark',
-    callback:t=>{
-      token=t;
-      document.getElementById('send').style.display='block';
-    },
-    'expired-callback':()=>{
-      token=null;
-      document.getElementById('send').style.display='none';
+  <style>
+    :root{
+      --bg-start: #0b5a2f;
+      --bg-end:   #02140b;
+      --glass: rgba(255,255,255,0.05);
+      --white: #ffffff;
+      --card-height: 86px;
+      --gutter: 16px;
+      --max-width: 1100px;
+      --ripple-duration: 340ms;
+      --muted: rgba(255,255,255,0.12);
+      --accent: #29d07a;
+      --danger: #ff6b6b;
     }
-  });
-}
+    *{box-sizing:border-box}
+    html,body{
+      height:100%;
+      margin:0;
+      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+      color:var(--white);
+      -webkit-font-smoothing:antialiased;
+      -moz-osx-font-smoothing:grayscale;
+      overflow:hidden;
+      background:
+        radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent 8%),
+        radial-gradient(800px 500px at 90% 90%, rgba(0,0,0,0.06), transparent 12%),
+        linear-gradient(120deg, var(--bg-start), var(--bg-end));
+      background-size: 200% 200%;
+      animation: bgMorph 22s linear infinite;
+    }
 
-document.getElementById('send').onclick=async()=>{
-  if(sending||!token)return;
-  const msg=document.getElementById('msg').value.trim();
-  if(!msg){toast('Nachricht leer');return;}
+    @keyframes bgMorph {
+      0%{ background-position:0% 50% }
+      50%{ background-position:100% 50% }
+      100%{ background-position:0% 50% }
+    }
 
-  sending=true;
-  toast('Sende Nachricht…');
-  const btn=document.getElementById('send');
-  btn.disabled=true;
+    /* background particles */
+    .particles{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; mix-blend-mode: screen; }
+    .particle{ position:absolute; background:rgba(255,255,255,0.08); filter: blur(8px); border-radius:50%; will-change: transform, opacity; animation-timing-function: linear; animation-iteration-count: infinite; transform: translate3d(0,0,0); }
 
-  try{
-    const r=await fetch(WORKER_URL,{
-      method:'POST',
-      headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({message:msg,token})
+    /* layout */
+    .page{ height:100dvh; display:flex; flex-direction:column; align-items:center; gap:18px; padding:env(safe-area-inset-top) 22px 22px 22px; position:relative; z-index:2; }
+
+    /* header */
+    .header{ width:100%; max-width:var(--max-width); display:flex; align-items:center; gap:14px; padding:6px 12px; margin-top:8px; user-select:none; }
+    .profile{ width:56px; height:56px; border-radius:10px; overflow:hidden; flex:0 0 56px; background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; transition:transform .36s cubic-bezier(.2,.9,.2,1); box-shadow: 0 8px 24px rgba(2,6,4,0.22); }
+    .profile img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .title{ font-weight:900; font-size:20px; color:var(--white); letter-spacing:0.2px; text-shadow:0 6px 20px rgba(3,6,4,0.35); }
+
+    /* top-right square button in header */
+    .top-button{
+      margin-left:auto;
+      width:52px;
+      height:52px;
+      border-radius:10px;
+      overflow:hidden;
+      flex:0 0 52px;
+      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+      border:1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      transition:
+        transform .35s cubic-bezier(.2,.9,.2,1),
+        box-shadow .35s,
+        background .35s;
+      text-decoration:none;
+      color:inherit;
+    }
+    .top-button img{ width:100%; height:100%; object-fit:cover; display:block; }
+    .top-button:hover{ transform: translateY(-4px) scale(1.05); box-shadow: 0 18px 50px rgba(0,0,0,0.55); background:rgba(255,255,255,0.12); }
+    .top-button:active{ transform: scale(0.96); }
+
+    /* canvas / glass */
+    .canvas-wrap{ width:100%; max-width:var(--max-width); flex:1 1 auto; display:flex; align-items:center; justify-content:center; pointer-events:none; position:relative; }
+    .canvas{ width:100%; height: calc(100% - 120px); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:18px; backdrop-filter: blur(16px) saturate(120%); -webkit-backdrop-filter: blur(16px) saturate(120%); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(2,8,6,0.45); padding:22px; display:flex; align-items:center; justify-content:center; overflow:visible; position:relative; pointer-events:auto; transition: transform .45s cubic-bezier(.2,.9,.2,1), box-shadow .45s; transform-style: preserve-3d; }
+    .canvas::before{ content:""; position:absolute; inset:0; z-index:0; border-radius:18px; background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01) 20%, rgba(255,255,255,0.04) 60%, transparent 70%); pointer-events:none; mix-blend-mode: overlay; }
+
+    /* form-card (adaptiert von .card) */
+    .form-card{ width:100%; max-width:760px; border-radius:14px; padding:18px; background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.015)); border:1px solid rgba(255,255,255,0.04); box-shadow: 0 12px 40px rgba(3,10,6,0.18); display:flex; flex-direction:column; gap:14px; transform-style: preserve-3d; }
+    .form-row{ display:flex; gap:12px; align-items:center; width:100%; }
+    .form-title{ font-weight:900; font-size:18px; }
+    .hint{ font-style:italic; opacity:0.92; font-weight:400; color: rgba(255,255,255,0.86); font-size:13px; }
+
+    textarea{
+      width:100%;
+      min-height:160px;
+      border-radius:12px;
+      border:none;
+      padding:14px;
+      font-size:16px;
+      background: rgba(0,0,0,0.18);
+      color:var(--white);
+      resize:vertical;
+      outline: none;
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.02);
+    }
+    textarea::placeholder{ color: rgba(255,255,255,0.62); font-style:italic; }
+
+    .controls{ display:flex; gap:12px; align-items:center; justify-content:flex-end; flex-wrap:wrap; }
+    .note { color: rgba(255,255,255,0.8); font-size:13px; margin-right:auto; }
+
+    button.send{
+      padding:12px 18px;
+      border-radius:12px;
+      border:none;
+      font-weight:800;
+      background:var(--accent);
+      cursor:pointer;
+      color: #022009;
+      box-shadow: 0 8px 24px rgba(2,8,6,0.18);
+      transition: transform .18s ease, box-shadow .18s;
+    }
+    button.send:active{ transform: translateY(1px) }
+    button.send[disabled]{
+      background: rgba(255,255,255,0.12);
+      color: rgba(255,255,255,0.6);
+      cursor: not-allowed;
+      box-shadow: none;
+      opacity: 0.86;
+    }
+
+    #captchaWrap{ display:block; }
+
+    .toast{
+      position:fixed;
+      bottom:20px;
+      left:50%;
+      transform:translateX(-50%);
+      background:rgba(0,0,0,.65);
+      padding:12px 16px;
+      border-radius:12px;
+      font-weight:700;
+      z-index:60;
+    }
+
+    .overlay{
+      position:fixed;
+      inset:0;
+      background:linear-gradient(180deg, rgba(0,0,0,0.5), rgba(0,0,0,0.6));
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      flex-direction:column;
+      gap:16px;
+      z-index:70;
+      padding:22px;
+    }
+    .overlay .card{
+      background: rgba(255,255,255,0.03);
+      padding: 18px;
+      border-radius:12px;
+      border:1px solid rgba(255,255,255,0.06);
+      text-align:center;
+    }
+
+    @media (max-width:640px){
+      :root{ --card-height:84px; --gutter:12px }
+      .profile{ width:50px; height:50px; border-radius:10px; }
+      .title{ font-size:18px; }
+      .canvas{ padding:14px; border-radius:14px; height: calc(100% - 110px); }
+      .top-button{ width:46px; height:46px; border-radius:9px; flex:0 0 46px; }
+      .form-card{ padding:14px; border-radius:12px; }
+      textarea{ min-height:120px; }
+    }
+
+    @media (prefers-reduced-motion: reduce){
+      * { animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="particles" id="particles"></div>
+
+  <div class="page">
+    <header class="header" role="banner" aria-label="Kopfbereich">
+      <div class="profile" id="profileWrap" title="Profilbild">
+        <img id="profileImage" src="https://bilderupload.org/image/1d3b03618-copy-0d0e0763-19ba-4b2f-9.jpg" alt="Profilbild" />
+      </div>
+      <div>
+        <div class="title" id="pageTitle">Anonyme Fragen an Sandro</div>
+      </div>
+
+      <!-- TOP-RIGHT SQUARE BUTTON -> zurück zur Startseite mit Verlinkungen -->
+      <a id="topButton" class="top-button" href="https://robloxsandro.github.io" target="_self" aria-label="Zur Startseite">
+        <img id="topButtonImg" src="https://bilderupload.org/image/2d4011221-copy-822f22bb-b2d7-4475-a.jpg" alt="Startseite">
+      </a>
+    </header>
+
+    <main class="canvas-wrap" role="main">
+      <section class="canvas" aria-label="Anonyme Nachricht">
+        <div class="form-card" role="form" aria-labelledby="formTitle">
+          <div class="form-row">
+            <div style="flex:1">
+              <div id="formTitle" class="form-title">Anonyme Nachricht</div>
+              <div class="hint" id="formHint">Schreibe eine kurze Nachricht an Sandro. Nur WhatsApp-Kanal wird angeboten.</div>
+            </div>
+          </div>
+
+          <textarea id="msg" placeholder="Deine Nachricht hier eingeben..." aria-label="Nachricht"></textarea>
+
+          <!-- Captcha area (visible immediately) -->
+          <div id="captchaWrap" aria-live="polite" aria-atomic="true" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+            <div id="captcha" style="min-width:260px;"></div>
+            <div id="captchaNote" style="color:rgba(255,255,255,0.82);font-size:13px;">Bitte Captcha lösen, damit der Absenden-Button angezeigt wird.</div>
+          </div>
+
+          <div class="controls" role="group" aria-label="Aktionen">
+            <div class="note" id="statusNote" aria-live="polite"></div>
+            <!-- send button is initially hidden and only shown once captcha is solved -->
+            <button id="send" class="send" style="display:none" aria-hidden="true">Absenden</button>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toastContainer" aria-hidden="true"></div>
+
+  <script>
+    /* ================= KONFIG ================= */
+    const WORKER_URL = 'https://anonymefragen.sandrorobloxcreations.workers.dev';
+    const TURNSTILE_SITE_KEY = '0x4AAAAAACG_VpwEjC-i_bxF';
+    const WHATSAPP_CHANNEL = 'https://whatsapp.com/channel/0029VbBM5SEF6sn2jzyAYn1G';
+
+    /* ================= STATE ================= */
+    let token = null;
+    let widgetId = null;
+    let sending = false;
+
+    /* ================= UI: toast ================= */
+    function toast(text, t=3000){
+      const el = document.createElement('div');
+      el.className='toast';
+      el.textContent=text;
+      el.setAttribute('role','status');
+      document.body.appendChild(el);
+      setTimeout(()=> el.remove(), t);
+    }
+
+    /* ================= TURNSTILE =================
+       Render the Turnstile widget immediately. The send button stays hidden
+       until the captcha callback provides a token.
+    */
+    function renderCaptcha(){
+      // avoid double-render
+      if(widgetId !== null) return;
+      document.getElementById('captcha').style.display = 'block';
+      try {
+        widgetId = turnstile.render('#captcha', {
+          sitekey: TURNSTILE_SITE_KEY,
+          theme: 'dark',
+          callback: (t) => {
+            token = t;
+            // reveal send button
+            const btn = document.getElementById('send');
+            btn.style.display = '';
+            btn.removeAttribute('aria-hidden');
+            document.getElementById('captchaNote').textContent = 'Captcha gelöst — du kannst jetzt absenden.';
+            toast('Captcha gelöst — Absenden möglich');
+            // focus send button for convenience (accessibility)
+            setTimeout(()=> btn.focus(), 150);
+          },
+          'expired-callback': () => {
+            token = null;
+            // hide send button again
+            const btn = document.getElementById('send');
+            btn.style.display = 'none';
+            btn.setAttribute('aria-hidden','true');
+            document.getElementById('captchaNote').textContent = 'Captcha abgelaufen — bitte erneut lösen.';
+            toast('Captcha abgelaufen');
+          },
+          'error-callback': () => {
+            token = null;
+            document.getElementById('captchaNote').textContent = 'Captcha-Fehler — lade die Seite neu oder versuche es erneut.';
+            toast('Captcha Fehler');
+          }
+        });
+      } catch(e){
+        console.warn('Turnstile render failed', e);
+        document.getElementById('captchaNote').textContent = 'Captcha nicht verfügbar.';
+      }
+    }
+
+    function resetCaptcha(){
+      try{ turnstile.reset(widgetId); }catch(e){}
+      token = null;
+      // clear widget DOM and re-render
+      widgetId = null;
+      document.getElementById('captcha').innerHTML = '';
+      document.getElementById('captchaNote').textContent = 'Bitte Captcha lösen, damit der Absenden-Button angezeigt wird.';
+      // hide button until solved again
+      const btn = document.getElementById('send');
+      btn.style.display = 'none';
+      btn.setAttribute('aria-hidden','true');
+    }
+
+    /* ================= SEND ================= */
+    const sendBtn = document.getElementById('send');
+    const msgEl = document.getElementById('msg');
+    const statusNote = document.getElementById('statusNote');
+
+    async function doSend(){
+      if(sending) return;
+      const msg = msgEl.value.trim();
+      if(!msg){
+        toast('Nachricht leer');
+        statusNote.textContent = 'Nachricht leer.';
+        return;
+      }
+      if(!token){
+        toast('Bitte Captcha lösen');
+        statusNote.textContent = 'Bitte Captcha lösen.';
+        return;
+      }
+
+      sending = true;
+      sendBtn.disabled = true;
+      sendBtn.setAttribute('aria-disabled','true');
+      sendBtn.style.pointerEvents = 'none';
+      sendBtn.style.opacity = '0.9';
+      statusNote.textContent = 'Sende Nachricht…';
+
+      try{
+        const res = await fetch(WORKER_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message: msg, token })
+        });
+
+        let data = {};
+        try{ data = await res.json(); }catch(e){}
+
+        if(!res.ok){
+          // show error from server if present
+          const errorText = data?.error || 'Fehler beim Senden';
+          toast(errorText);
+          statusNote.textContent = errorText;
+          if(res.status === 401 || res.status === 400){
+            // token rejected -> reset captcha
+            resetCaptcha();
+          }
+          if(res.status === 429){
+            toast('Bitte 10 Sekunden warten', 4000);
+            statusNote.textContent = 'Zu viele Anfragen — bitte kurz warten.';
+          }
+          return;
+        }
+
+        // success
+        showSuccessOverlay();
+        resetCaptcha();
+        msgEl.value = '';
+        statusNote.textContent = 'Gesendet.';
+      } catch(err){
+        console.error('Network error', err);
+        toast('Netzwerkfehler');
+        statusNote.textContent = 'Netzwerkfehler.';
+      } finally {
+        sending = false;
+        sendBtn.disabled = false;
+        sendBtn.removeAttribute('aria-disabled');
+        sendBtn.style.pointerEvents = '';
+      }
+    }
+
+    sendBtn.addEventListener('click', (e) => {
+      e.preventDefault();
+      doSend();
     });
-    if(!r.ok)throw 0;
 
-    success();
-  }catch{
-    toast('Fehler beim Senden');
-  }finally{
-    sending=false;
-    btn.disabled=false;
-  }
-};
+    /* ================= SUCCESS OVERLAY ================= */
+    function showSuccessOverlay(){
+      const o = document.createElement('div');
+      o.className = 'overlay';
+      o.innerHTML = `
+        <div class="card">
+          <h2 style="margin:0 0 6px 0">Nachricht gesendet 🎉</h2>
+          <div style="margin-bottom:12px;color:rgba(255,255,255,0.9)">Danke — deine anonyme Nachricht wurde übermittelt.</div>
+          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+            <button id="againBtn" class="send" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white);">Noch eine senden</button>
+            <a id="whatsappLink" href="${WHATSAPP_CHANNEL}" target="_blank" rel="noopener noreferrer">
+              <button class="send" style="background:var(--accent);">Sandros WhatsApp Kanal besuchen</button>
+            </a>
+          </div>
+        </div>
+      `;
+      document.body.appendChild(o);
 
-function success(){
-  const o=document.createElement('div');
-  o.className='overlay';
-  o.innerHTML=`
-    <div class="card">
-      <h2>Nachricht gesendet 🎉</h2>
-      <a href="${WHATSAPP}" target="_blank">
-        <button>WhatsApp Kanal besuchen</button>
-      </a><br><br>
-      <button onclick="location.reload()">Noch eine senden</button>
-    </div>`;
-  document.body.appendChild(o);
-}
+      document.getElementById('againBtn').addEventListener('click', ()=> {
+        o.remove();
+        // re-render captcha so user can send again
+        setTimeout(()=> {
+          resetCaptcha();
+          renderCaptcha();
+          msgEl.focus();
+        }, 150);
+      });
+    }
 
-renderCaptcha();
-</script>
+    /* ----------------- particles ----------------- */
+    (function createParticles(){
+      const container = document.getElementById('particles');
+      const count = Math.min(32, Math.max(12, Math.floor((window.innerWidth*window.innerHeight)/90000)));
+      for(let i=0;i<count;i++){
+        const p = document.createElement('div'); p.className='particle';
+        const size = Math.random()*28 + 8;
+        p.style.width = p.style.height = size + 'px';
+        p.style.left = (Math.random()*110 - 5) + '%';
+        p.style.top  = (Math.random()*110 - 5) + '%';
+        p.style.opacity = (Math.random()*0.18 + 0.04).toString();
+        const dur = Math.random()*40 + 40;
+        const dx = (Math.random()*200 - 100);
+        const dy = (Math.random()*200 - 100);
+        const rotate = (Math.random()*40 - 20);
+        const keyframesName = `float${i}`;
+        p.style.animation = `${keyframesName} ${dur}s linear infinite`;
+        const keyframes = `@keyframes ${keyframesName} {
+          0% { transform: translate3d(0px,0px,0) rotate(0deg) }
+          50%{ transform: translate3d(${dx/2}px,${dy/2}px,0) rotate(${rotate}deg) }
+          100%{ transform: translate3d(${dx}px,${dy}px,0) rotate(${rotate*1.2}deg) }
+        }`;
+        const style = document.createElement('style'); style.textContent = keyframes;
+        document.head.appendChild(style);
+        container.appendChild(p);
+      }
+    })();
+
+    /* ----------------- parallax ----------------- */
+    (function addParallax(){
+      const canvas = document.querySelector('.canvas');
+      if(!canvas) return;
+      window.addEventListener('pointermove', (e)=>{
+        const rect = canvas.getBoundingClientRect();
+        const x = ((e.clientX - rect.left) / rect.width) - 0.5;
+        const y = ((e.clientY - rect.top) / rect.height) - 0.5;
+        canvas.style.transform = `translateZ(0) translate(${x * 8}px, ${y * 8}px)`;
+      });
+      canvas.addEventListener('pointerleave', ()=> canvas.style.transform = '');
+    })();
+
+    /* ----------------- init ----------------- */
+    function applyFaviconAndTitle(){
+      document.title = 'Anonyme Fragen an Sandro';
+      const titleEl = document.getElementById('pageTitle');
+      if(titleEl) titleEl.textContent = 'Anonyme Fragen an Sandro';
+      const link = document.getElementById('favicon') || document.createElement('link');
+      link.id = 'favicon';
+      link.rel = 'icon';
+      link.type = 'image/png';
+      link.href = document.getElementById('profileImage')?.src || '';
+      document.head.appendChild(link);
+    }
+
+    function init(){
+      applyFaviconAndTitle();
+      renderCaptcha();
+      // small delay to ensure captcha widget has chance to initialize
+      setTimeout(()=> {
+        // nothing else needed for scaling here (single card)
+      }, 140);
+    }
+
+    window.addEventListener('load', init);
+
+    // accessibility: Enter on textarea + Ctrl/Cmd => send (only if send button visible)
+    msgEl.addEventListener('keydown', (e) => {
+      if((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'enter'){
+        if(token && !sending){
+          doSend();
+        }
+      }
+    });
+
+    // Expose a small API similar to the links page
+    window.__AnonymeForm = {
+      setProfile(url){ const img = document.getElementById('profileImage'); if(img) img.src = url; const l = document.getElementById('favicon'); if(l) l.href = url; },
+      setTopButton(url){ const t = document.getElementById('topButton'); if(t) t.href = url; }
+    };
+  </script>
 </body>
 </html>
