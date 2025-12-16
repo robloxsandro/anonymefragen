@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Anonyme Fragen an Sandro</title>
+  <title>💚 Anonyme Fragen an Sandro 💚</title>
 
   <!-- Montserrat -->
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
@@ -209,9 +209,9 @@
       <section class="canvas" aria-label="Anonyme Nachricht">
         <div class="form-card" role="form" aria-labelledby="formTitle">
           <div class="form-row">
-            <div style="flex:1">
-              <div id="formTitle" class="form-title">Anonyme Nachricht</div>
-              <div class="hint" id="formHint">Schreibe eine kurze Nachricht an Sandro. Nur WhatsApp-Kanal wird angeboten.</div>
+            <div style="flex:5">
+              <div id="formTitle" class="form-title">Anonyme Nachricht schreiben</div>
+              <div class="hint" id="formHint">Schreibe eine kurze anonyme Nachricht an Sandro. Er wird nur auf seinem WhatsApp Kanal reagieren.</div>
             </div>
           </div>
 
@@ -220,7 +220,7 @@
           <!-- Captcha area (visible immediately) -->
           <div id="captchaWrap" aria-live="polite" aria-atomic="true" style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
             <div id="captcha" style="min-width:260px;"></div>
-            <div id="captchaNote" style="color:rgba(255,255,255,0.82);font-size:13px;">Bitte Captcha lösen, damit der Absenden-Button angezeigt wird.</div>
+            <div id="captchaNote" style="color:rgba(255,255,255,0.82);font-size:13px;">Deine Nachricht bleibt anonym.</div>
           </div>
 
           <div class="controls" role="group" aria-label="Aktionen">
@@ -274,8 +274,6 @@
             const btn = document.getElementById('send');
             btn.style.display = '';
             btn.removeAttribute('aria-hidden');
-            document.getElementById('captchaNote').textContent = 'Captcha gelöst — du kannst jetzt absenden.';
-            toast('Captcha gelöst — Absenden möglich');
             // focus send button for convenience (accessibility)
             setTimeout(()=> btn.focus(), 150);
           },
@@ -285,12 +283,10 @@
             const btn = document.getElementById('send');
             btn.style.display = 'none';
             btn.setAttribute('aria-hidden','true');
-            document.getElementById('captchaNote').textContent = 'Captcha abgelaufen — bitte erneut lösen.';
             toast('Captcha abgelaufen');
           },
           'error-callback': () => {
             token = null;
-            document.getElementById('captchaNote').textContent = 'Captcha-Fehler — lade die Seite neu oder versuche es erneut.';
             toast('Captcha Fehler');
           }
         });
@@ -306,7 +302,6 @@
       // clear widget DOM and re-render
       widgetId = null;
       document.getElementById('captcha').innerHTML = '';
-      document.getElementById('captchaNote').textContent = 'Bitte Captcha lösen, damit der Absenden-Button angezeigt wird.';
       // hide button until solved again
       const btn = document.getElementById('send');
       btn.style.display = 'none';
@@ -323,12 +318,12 @@
       const msg = msgEl.value.trim();
       if(!msg){
         toast('Nachricht leer');
-        statusNote.textContent = 'Nachricht leer.';
+   
         return;
       }
       if(!token){
         toast('Bitte Captcha lösen');
-        statusNote.textContent = 'Bitte Captcha lösen.';
+     
         return;
       }
 
@@ -360,7 +355,7 @@
           }
           if(res.status === 429){
             toast('Bitte 10 Sekunden warten', 4000);
-            statusNote.textContent = 'Zu viele Anfragen — bitte kurz warten.';
+  
           }
           return;
         }
