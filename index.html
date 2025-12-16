@@ -1,450 +1,183 @@
 <!doctype html>
 <html lang="de">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
-  <title>Anonyme Nachrichten an Sandro</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Anonyme Nachrichten an Sandro</title>
 
-  <!-- Montserrat -->
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&display=swap" rel="stylesheet">
+<link id="favicon" rel="icon" href="" type="image/png">
 
-  <!-- favicon placeholder (wird beim Laden mit profileImage ersetzt) -->
-  <link id="favicon" rel="icon" href="" type="image/png">
+<!-- Cloudflare Turnstile -->
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js" async defer></script>
 
-  <style>
-    :root{
-      --bg-start: #0b5a2f;
-      --bg-end:   #02140b;
-      --glass: rgba(255,255,255,0.05);
-      --white: #ffffff;
-      --card-height: 86px;
-      --gutter: 16px;
-      --max-width: 1100px;
-      --ripple-duration: 340ms;
-      --accent: #29d07a;
-    }
-    *{box-sizing:border-box}
-    html,body{
-      height:100%;
-      margin:0;
-      font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
-      color:var(--white);
-      -webkit-font-smoothing:antialiased;
-      -moz-osx-font-smoothing:grayscale;
-      overflow:hidden;
-      background:
-        radial-gradient(1200px 600px at 10% 10%, rgba(255,255,255,0.02), transparent 8%),
-        radial-gradient(800px 500px at 90% 90%, rgba(0,0,0,0.06), transparent 12%),
-        linear-gradient(120deg, var(--bg-start), var(--bg-end));
-      background-size: 200% 200%;
-      animation: bgMorph 22s linear infinite;
-      -webkit-tap-highlight-color: transparent;
-    }
-    @keyframes bgMorph { 0%{ background-position:0% 50% } 50%{ background-position:100% 50% } 100%{ background-position:0% 50% } }
-
-    /* particles */
-    .particles{ position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; mix-blend-mode: screen; }
-    .particle{ position:absolute; background:rgba(255,255,255,0.08); filter: blur(8px); border-radius:50%; will-change: transform, opacity; animation-timing-function: linear; animation-iteration-count: infinite; transform: translate3d(0,0,0); }
-
-    /* layout */
-    .page{ height:100dvh; display:flex; flex-direction:column; align-items:center; gap:18px; padding:env(safe-area-inset-top) 22px 22px 22px; position:relative; z-index:2; }
-
-    /* header */
-    .header{ width:100%; max-width:var(--max-width); display:flex; align-items:center; gap:14px; padding:6px 12px; margin-top:8px; user-select:none; z-index:5; }
-    .profile{ width:56px; height:56px; border-radius:10px; overflow:hidden; flex:0 0 56px; background:linear-gradient(135deg, rgba(255,255,255,0.04), rgba(255,255,255,0.01)); border:1px solid rgba(255,255,255,0.06); display:flex; align-items:center; justify-content:center; transition:transform .36s cubic-bezier(.2,.9,.2,1); box-shadow: 0 8px 24px rgba(2,6,4,0.22); }
-    .profile img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .title{
-  font-weight:900;
-  font-size:20px;
-  color:var(--white);
-  letter-spacing:0.2px;
-  text-shadow:0 6px 20px rgba(3,6,4,0.35);
-  white-space:normal;      /* ✅ erlaubt Umbruch */
-  word-break:break-word;  /* ✅ verhindert Überlaufen */
-  max-width: 100%;
+<style>
+body{
+  margin:0;
+  font-family:Montserrat,system-ui;
+  background:linear-gradient(120deg,#0b5a2f,#02140b);
+  color:#fff;
 }
-
-    /* top-right button */
-    .top-button{
-      margin-left:auto;
-      width:52px;
-      height:52px;
-      border-radius:10px;
-      overflow:hidden;
-      flex:0 0 52px;
-      background:linear-gradient(135deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-      border:1px solid rgba(255,255,255,0.08);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.35);
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      transition: transform .35s cubic-bezier(.2,.9,.2,1), box-shadow .35s, background .35s;
-      text-decoration:none;
-      color:inherit;
-      z-index:6;
-    }
-    .top-button img{ width:100%; height:100%; object-fit:cover; display:block; }
-    .top-button:hover{ transform: translateY(-4px) scale(1.05); box-shadow: 0 18px 50px rgba(0,0,0,0.55); background:rgba(255,255,255,0.12); }
-    .top-button:active{ transform: scale(0.96); }
-
-    /* canvas / glass */
-    .canvas-wrap{ width:100%; max-width:var(--max-width); flex:1 1 auto; display:flex; align-items:center; justify-content:center; pointer-events:none; position:relative; }
-    .canvas{ width:100%; height: calc(100% - 120px); background: linear-gradient(180deg, rgba(255,255,255,0.04), rgba(255,255,255,0.02)); border-radius:18px; backdrop-filter: blur(16px) saturate(120%); -webkit-backdrop-filter: blur(16px) saturate(120%); border: 1px solid rgba(255,255,255,0.06); box-shadow: 0 20px 60px rgba(2,8,6,0.45); padding:22px; display:flex; align-items:center; justify-content:center; overflow:visible; position:relative; pointer-events:auto; transition: transform .22s cubic-bezier(.2,.9,.2,1), box-shadow .45s; transform-style: preserve-3d; }
-    .canvas::before{ content:""; position:absolute; inset:0; z-index:0; border-radius:18px; background: linear-gradient(120deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01) 20%, rgba(255,255,255,0.04) 60%, transparent 70%); pointer-events:none; mix-blend-mode: overlay; }
-
-    .cards-wrap{ width:100%; height:100%; display:flex; align-items:center; justify-content:center; padding:6px; position:relative; z-index:2; }
-    .cards{ width:100%; max-width:920px; display:flex; flex-direction:column; gap:var(--gutter); align-items:stretch; transform-origin:center center; will-change:transform; padding:8px; }
-
-    .center-block{ display:flex; flex-direction:column; align-items:center; gap:16px; padding:22px; text-align:center; color:var(--white); }
-
-    .notice{ font-size:18px; opacity:0.95; max-width:780px; line-height:1.4; }
-    .whatsapp-link{ display:inline-flex; align-items:center; gap:10px; background: linear-gradient(90deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01)); padding:12px 16px; border-radius:12px; border:1px solid rgba(255,255,255,0.04); color:var(--white); text-decoration:none; font-weight:700; font-size:15px; box-shadow: 0 8px 24px rgba(0,0,0,0.22); }
-    .whatsapp-link img{ width:28px; height:28px; object-fit:contain; display:block; }
-
-    .form-card{ width:100%; max-width:760px; margin-top:6px; background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:14px; padding:18px; border:1px solid rgba(255,255,255,0.04); box-shadow: 0 8px 28px rgba(3,10,6,0.16); }
-    .form-title{ font-weight:900; font-size:16px; margin-bottom:8px; }
-    textarea{ width:100%; min-height:160px; resize:vertical; background: rgba(0,0,0,0.14); border:1px solid rgba(255,255,255,0.04); color:var(--white); padding:12px; border-radius:10px; font-size:16px; line-height:1.35; font-family: "Montserrat", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial; -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale; }
-    .controls{ display:flex; gap:12px; margin-top:12px; align-items:center; justify-content:space-between; flex-wrap:wrap; }
-    .help{ font-size:13px; opacity:0.88; color: rgba(255,255,255,0.86); }
-    .controls-right{ display:flex; gap:12px; align-items:center; }
-
-    .btn{
-      background: linear-gradient(180deg, var(--accent), #12a558);
-      padding:10px 16px;
-      border-radius:10px;
-      color:#00230b;
-      font-weight:800;
-      border:none;
-      cursor:pointer;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.28);
-      transition: transform .18s ease, box-shadow .18s;
-    }
-    .btn:active{ transform: translateY(1px) }
-    .btn.ghost{ background: rgba(255,255,255,0.06); color:var(--white); box-shadow:none; border:1px solid rgba(255,255,255,0.04); font-weight:700; }
-
-    .ripple { position:absolute; border-radius:50%; background: rgba(255,255,255,0.22); pointer-events:none; transform: scale(0); opacity:1; will-change: transform, opacity; }
-
-    @media (max-width:640px){
-      :root{ --card-height:84px; --gutter:12px }
-      .profile{ width:50px; height:50px; border-radius:10px; }
-      .title{ font-size:18px; }
-      .canvas{ padding:14px; border-radius:14px; height: calc(100% - 110px); }
-      .notice{ font-size:15px; }
-      textarea{ min-height:120px; font-size:16px; }
-      .form-card{ padding:12px; border-radius:12px; }
-      .controls{ flex-direction:column; align-items:stretch; gap:10px; }
-      .controls-right{ justify-content:flex-end; }
-    }
-
-    @media (prefers-reduced-motion: reduce){
-      * { animation: none !important; transition: none !important; }
-    }
-
-    /* overlay success */
-    .overlay{
-      position:fixed;
-      inset:0;
-      background: rgba(0,0,0,0.96);
-      z-index:9999;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      flex-direction:column;
-      gap:18px;
-      padding:24px;
-      color:var(--white);
-      text-align:center;
-    }
-    .overlay .overlay-title{ font-size:22px; font-weight:900; }
-    .overlay .overlay-actions{ display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
-
-    /* simple toast */
-    .toast{ position:fixed; left:50%; transform:translateX(-50%); bottom:26px; background:rgba(0,0,0,0.6); padding:10px 14px; border-radius:10px; color:var(--white); z-index:9998; box-shadow: 0 8px 26px rgba(0,0,0,0.6); font-weight:700; }
-  </style>
+.wrapper{
+  max-width:720px;
+  margin:40px auto;
+  padding:20px;
+}
+h1{font-weight:900}
+textarea{
+  width:100%;
+  min-height:160px;
+  border-radius:12px;
+  border:none;
+  padding:14px;
+  font-size:16px;
+}
+button{
+  margin-top:12px;
+  padding:12px 18px;
+  border-radius:12px;
+  border:none;
+  font-weight:800;
+  background:#29d07a;
+  cursor:pointer;
+}
+button:disabled{opacity:.6}
+#captcha{margin-top:16px;display:none}
+.toast{
+  position:fixed;
+  bottom:20px;
+  left:50%;
+  transform:translateX(-50%);
+  background:rgba(0,0,0,.7);
+  padding:12px 16px;
+  border-radius:12px;
+  font-weight:700;
+}
+.overlay{
+  position:fixed;
+  inset:0;
+  background:#000;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  gap:16px;
+}
+</style>
 </head>
 <body>
-  <div class="particles" id="particles" aria-hidden="true"></div>
 
-  <div class="page">
-    <header class="header" role="banner" aria-label="Kopfbereich">
-      <div class="profile" id="profileWrap" title="Profilbild">
-        <img id="profileImage" src="" alt="Profilbild" />
-      </div>
-      <div>
-        <div class="title" id="pageTitle">Anonyme Nachrichten an Sandro</div>
-      </div>
+<div class="wrapper">
+  <h1>Anonyme Nachricht</h1>
+  <textarea id="msg" placeholder="Nachricht hier eingeben..."></textarea>
+  <div id="captcha"></div>
+  <button id="send">Absenden</button>
+</div>
 
-      <!-- TOP-RIGHT SQUARE BUTTON -->
-      <a id="topButton" class="top-button" href="https://robloxsandro.github.io" target="_self" aria-label="Zurück zur Hauptseite">
-        <img id="topButtonImg" src="" alt="Zurück zur Hauptseite">
-      </a>
-    </header>
+<div id="toast"></div>
 
-    <main class="canvas-wrap" role="main">
-      <section class="canvas" aria-label="Anonyme Fragen">
-        <div class="cards-wrap">
-          <div class="cards" id="cardsContainer" aria-live="polite" aria-atomic="true">
-            <!-- Inhalt per Script -->
-          </div>
-        </div>
-      </section>
-    </main>
-  </div>
+<script>
+/* ================= KONFIG ================= */
+const WORKER_URL = 'https://anonymefragen.sandrorobloxcreations.workers.dev';
+const TURNSTILE_SITE_KEY = '0x4AAAAAACG_VpwEjC-i_bxF';
 
-  <div id="toastRoot" aria-live="polite" aria-atomic="true"></div>
+/* ================= STATE ================= */
+let token = null;
+let widgetId = null;
+let sending = false;
 
-  <script>
-    /**************************************************************************
-     * Konfiguration
-     **************************************************************************/
-    const profileImage = "https://bilderupload.org/image/1d3b03618-copy-0d0e0763-19ba-4b2f-9.jpg";
-    const topButtonImage = "https://bilderupload.org/image/274a13319-copy-e4e47531-4e12-4504-a.jpg";
-    const whatsappLink = "https://whatsapp.com/channel/0029VbBM5SEF6sn2jzyAYn1G";
-    const webhookURL = "https://discord.com/api/webhooks/1450118803932450931/vhz1oqBDsEtiUGIZ60vxSOhifbc2GmlVS6UTmuQYjW--jAzm8RJz7UsS3HicdOIl00RC";
+/* ================= UI ================= */
+function toast(text, t=3000){
+  const el = document.createElement('div');
+  el.className='toast';
+  el.textContent=text;
+  document.body.appendChild(el);
+  setTimeout(()=>el.remove(),t);
+}
 
-    /* ---------------- helper ---------------- */
-    function setImageSafe(imgEl, url){ if(!imgEl) return; if(!url){ imgEl.style.display='none'; return; } imgEl.src = url; imgEl.addEventListener('error', ()=> { imgEl.style.display='none'; }, {once:true}); }
-    function showToast(text, ms = 3200){ const root=document.getElementById('toastRoot'); if(!root) return; root.innerHTML=''; const t=document.createElement('div'); t.className='toast'; t.textContent=text; root.appendChild(t); setTimeout(()=>{ root.innerHTML=''; }, ms); }
+/* ================= TURNSTILE ================= */
+function renderCaptcha(){
+  if(widgetId !== null) return;
+  document.getElementById('captcha').style.display='block';
+  widgetId = turnstile.render('#captcha',{
+    sitekey: TURNSTILE_SITE_KEY,
+    theme:'dark',
+    callback:(t)=>{
+      token = t;
+      toast('Captcha gelöst – erneut absenden');
+    },
+    'expired-callback':()=>{
+      token = null;
+      toast('Captcha abgelaufen');
+    }
+  });
+}
 
-    /* ----------------- build UI ----------------- */
-    setImageSafe(document.getElementById('profileImage'), profileImage);
-    setImageSafe(document.getElementById('topButtonImg'), topButtonImage);
+function resetCaptcha(){
+  try{ turnstile.reset(widgetId); }catch{}
+  token = null;
+  widgetId = null;
+  document.getElementById('captcha').innerHTML='';
+  document.getElementById('captcha').style.display='none';
+}
 
-    const cardsEl = document.getElementById('cardsContainer');
+/* ================= SEND ================= */
+document.getElementById('send').onclick = async ()=>{
+  if(sending) return;
 
-    function buildUI(){
-      cardsEl.innerHTML = '';
+  const msg = document.getElementById('msg').value.trim();
+  if(!msg){
+    toast('Nachricht leer');
+    return;
+  }
 
-      const center = document.createElement('div'); center.className='center-block';
+  if(!token){
+    renderCaptcha();
+    toast('Bitte Captcha lösen');
+    return;
+  }
 
-      const notice = document.createElement('div'); notice.className='notice';
-      notice.textContent = 'Sandro reagiert auf die anonymen Fragen NUR in seinem WhatsApp Kanal.';
-      center.appendChild(notice);
+  sending = true;
+  document.getElementById('send').disabled = true;
 
-      const wa = document.createElement('a'); wa.className='whatsapp-link'; wa.href = whatsappLink; wa.target='_blank'; wa.rel='noopener noreferrer';
-      wa.innerHTML = '<img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp"><span>Sandros WhatsApp Kanal</span>';
-      center.appendChild(wa);
+  try{
+    const res = await fetch(WORKER_URL,{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({ message: msg, token })
+    });
 
-      // form
-      const formCard = document.createElement('div'); formCard.className='form-card';
-      const ft = document.createElement('div'); ft.className='form-title'; ft.textContent = 'Schreibe eine Nachricht an Sandro:';
-      const ta = document.createElement('textarea'); ta.id='anonMessage'; ta.placeholder = 'Nachricht hier eingeben...'; ta.setAttribute('aria-label','Nachricht hier eingeben...'); ta.autocapitalize='sentences'; ta.autocomplete='off';
-      formCard.appendChild(ft); formCard.appendChild(ta);
+    const data = await res.json();
 
-      const controls = document.createElement('div'); controls.className='controls';
-      const help = document.createElement('div'); help.className='help'; help.textContent = 'Deine Nachricht bleibt anonym.';
-      const right = document.createElement('div'); right.className='controls-right';
-      const sendBtn = document.createElement('button'); sendBtn.className='btn'; sendBtn.id='sendBtn'; sendBtn.textContent='Absenden';
-      // we keep button active always (user requested webhook to be sent if empty)
-      right.appendChild(sendBtn);
-      controls.appendChild(help);
-      controls.appendChild(right);
-      formCard.appendChild(controls);
-      center.appendChild(formCard);
-      cardsEl.appendChild(center);
-
-      // behaviour: always attempt to send webhook.
-      sendBtn.addEventListener('click', async (e)=>{
-        e.preventDefault();
-        const text = ta.value.trim();
-
-        // build discord payload
-        let payloadText = '';
-        if(text.length > 0){
-          payloadText = `# Neue anonyme Frage: 🎉\n\`\`\`\n${text}\n\`\`\``;
-        } else {
-          payloadText = `# Neue anonyme Frage: 🎉\n[Discord Text Box wo man rauf klicken kann um einfach zu kopieren mit der frage]`;
-        }
-
-        // show a quick toast
-        showToast('Sende Nachricht...');
-
-        // try fetch->sendWebhook; if ok show overlay; else try beacon and still show error
-        try {
-          await sendWebhook(payloadText);
-        } catch(err){
-          // attempt sendBeacon as fallback already inside sendWebhook; if still fails, show error toast
-          console.warn('Webhook send failed', err);
-          showToast('Webhook konnte nicht gesendet werden. Überprüfe die Verbindung.', 4000);
-          // still do the rest (copy/open) for UX? We'll continue: if text present, copy & open WA; but do not show success overlay.
-        }
-
-        // if text present: copy to clipboard and open WhatsApp (so Sandro can reply)
-        if(text.length > 0){
-          try {
-            await navigator.clipboard.writeText(text);
-            showToast('Nachricht in die Zwischenablage kopiert. Öffne WhatsApp...');
-          } catch(e){
-            showToast('Kopieren fehlgeschlagen — bitte manuell kopieren.', 3000);
-          }
-          // open WhatsApp channel
-          try { window.open(whatsappLink, '_blank', 'noopener'); } catch(e){ window.location.href = whatsappLink; }
-        }
-
-        // show success overlay (wenn webhook send schien zu arbeiten, oder ungeachtet dessen als UX)
-        showSuccessOverlay();
-      });
-
-      // avoid mobile zoom by ensuring font-size >= 16 (already set). Also prevent accidental page transforms on focus.
-      const canvas = document.querySelector('.canvas');
-      ta.addEventListener('focus', ()=> {
-        // remove subtle parallax transform while editing
-        if(canvas) canvas.style.transform = 'translateZ(0)';
-      });
-      ta.addEventListener('blur', ()=> {
-        // ensure no lingering transforms - keep header visible
-        if(canvas) canvas.style.transform = '';
-      });
-
-      // keyboard: ctrl/cmd+enter to send
-      ta.addEventListener('keydown', (e)=>{
-        if((e.key === 'Enter') && (e.ctrlKey || e.metaKey)){
-          e.preventDefault();
-          document.getElementById('sendBtn').click();
-        }
-      });
-
-      // focus textarea on load (nice UX)
-      setTimeout(()=> ta.focus(), 200);
+    if(!res.ok){
+      toast(data.error || 'Fehler');
+      if(res.status === 401) resetCaptcha();
+      if(res.status === 429) toast('Bitte 10 Sekunden warten',4000);
+      return;
     }
 
-    /* ------------------ sendWebhook ------------------ */
-    async function sendWebhook(content){
-      if(!webhookURL) throw new Error('Webhook nicht gesetzt.');
-      const body = JSON.stringify({ content });
-      // Try fetch first
-      try {
-        const res = await fetch(webhookURL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body
-        });
-        if(!res.ok){
-          // try sendBeacon fallback
-          tryBeacon(body);
-          throw new Error('Webhook antwortete mit ' + res.status);
-        }
-        return;
-      } catch(fetchErr){
-        // fallback: sendBeacon
-        try {
-          tryBeacon(body);
-          return;
-        } catch(e){
-          throw fetchErr;
-        }
-      }
-    }
+    showSuccess();
+    resetCaptcha();
+    document.getElementById('msg').value='';
+  }catch{
+    toast('Netzwerkfehler');
+  }finally{
+    sending = false;
+    document.getElementById('send').disabled = false;
+  }
+};
 
-    function tryBeacon(body){
-      if(navigator.sendBeacon){
-        const blob = new Blob([body], { type: 'application/json' });
-        const ok = navigator.sendBeacon(webhookURL, blob);
-        if(!ok) throw new Error('sendBeacon returned false');
-        return;
-      }
-      throw new Error('sendBeacon not supported');
-    }
+/* ================= SUCCESS ================= */
+function showSuccess(){
+  const o = document.createElement('div');
+  o.className='overlay';
+  o.innerHTML = `
+    <h2>Nachricht gesendet 🎉</h2>
+    <button onclick="location.reload()">Noch eine senden</button>
+  `;
+  document.body.appendChild(o);
+}
+</script>
 
-    /* ---------------- success overlay ---------------- */
-    function showSuccessOverlay(){
-      // remove existing if any
-      const existing = document.getElementById('successOverlay');
-      if(existing) existing.remove();
-
-      const overlay = document.createElement('div');
-      overlay.className = 'overlay';
-      overlay.id = 'successOverlay';
-      overlay.innerHTML = `
-        <div class="overlay-title">Nachricht erfolgreich gesendet!</div>
-        <div class="overlay-sub small-muted" style="opacity:.9">Danke — Sandro kann über seinen WhatsApp Kanal reagieren.</div>
-        <div class="overlay-actions">
-          <button id="goWhatsApp" class="btn">Sandros WhatsApp Kanal besuchen</button>
-          <button id="sendAgain" class="btn ghost">Noch eine Nachricht senden</button>
-        </div>
-      `;
-      document.body.appendChild(overlay);
-
-      document.getElementById('goWhatsApp').addEventListener('click', ()=> {
-        try { window.open(whatsappLink, '_blank', 'noopener'); } catch(e){ window.location.href = whatsappLink; }
-      });
-
-      document.getElementById('sendAgain').addEventListener('click', ()=> {
-        // reload to reset form
-        location.reload();
-      });
-    }
-
-    /* ---------------- particles (same subtle behavior) ---------------- */
-    (function createParticles(){
-      try {
-        const container = document.getElementById('particles');
-        const count = Math.min(32, Math.max(12, Math.floor((window.innerWidth*window.innerHeight)/90000)));
-        for(let i=0;i<count;i++){
-          const p = document.createElement('div'); p.className='particle';
-          const size = Math.random()*28 + 8;
-          p.style.width = p.style.height = size + 'px';
-          p.style.left = (Math.random()*110 - 5) + '%';
-          p.style.top  = (Math.random()*110 - 5) + '%';
-          p.style.opacity = (Math.random()*0.18 + 0.04).toString();
-          const dur = Math.random()*40 + 40;
-          const dx = (Math.random()*120 - 60);
-          const dy = (Math.random()*120 - 60);
-          const rotate = (Math.random()*40 - 20);
-          const keyframesName = `float${i}`;
-          p.style.animation = `${keyframesName} ${dur}s linear infinite`;
-          const keyframes = `@keyframes ${keyframesName} {
-            0% { transform: translate3d(0px,0px,0) rotate(0deg) }
-            50%{ transform: translate3d(${dx/2}px,${dy/2}px,0) rotate(${rotate}deg) }
-            100%{ transform: translate3d(${dx}px,${dy}px,0) rotate(${rotate*1.2}deg) }
-          }`;
-          const style = document.createElement('style'); style.textContent = keyframes;
-          document.head.appendChild(style);
-          container.appendChild(p);
-        }
-      } catch(e){ /* silent */ }
-    })();
-
-    /* ---------------- subtle parallax (very small) ---------------- */
-    (function addParallax(){
-      const canvas = document.querySelector('.canvas');
-      if(!canvas) return;
-      let enabled = true;
-      window.addEventListener('pointermove', (e)=>{
-        if(!enabled) return;
-        const rect = canvas.getBoundingClientRect();
-        const x = ((e.clientX - rect.left) / rect.width) - 0.5;
-        const y = ((e.clientY - rect.top) / rect.height) - 0.5;
-        // subtle translate only, no zoom/scale
-        canvas.style.transform = `translate(${x * 6}px, ${y * 6}px)`;
-      }, {passive:true});
-      // reset transforms on focusin/focusout to ensure header/title isn't affected
-      window.addEventListener('focusin', ()=> { if(canvas) { canvas.style.transform = 'translateZ(0)'; } });
-      window.addEventListener('focusout', ()=> { if(canvas) { canvas.style.transform = ''; } });
-      window.addEventListener('resize', ()=> { if(canvas) canvas.style.transform = ''; });
-    })();
-
-    /* ---------------- init ---------------- */
-    function applyFaviconAndTitle(){
-      document.title = 'anonyme Nachrichten an Sandro';
-      const titleEl = document.getElementById('pageTitle'); if(titleEl) titleEl.textContent = 'anonyme Nachrichten an Sandro';
-      const link = document.getElementById('favicon') || document.createElement('link');
-      link.id = 'favicon'; link.rel='icon'; link.type='image/png'; link.href = profileImage || '';
-      document.head.appendChild(link);
-    }
-
-    function init(){
-      applyFaviconAndTitle();
-      buildUI();
-      // set top button image
-      setImageSafe(document.getElementById('topButtonImg'), topButtonImage || profileImage);
-      // small scale adjust placeholder (keeps look similar to main page)
-      setTimeout(()=>{}, 120);
-    }
-    window.addEventListener('load', init);
-
-    // expose minimal runtime hooks if needed later
-    window.__SandrosAnon = { setProfile(url){ setImageSafe(document.getElementById('profileImage'), url); const l = document.getElementById('favicon'); if(l) l.href = url; }, setTopButton(url){ setImageSafe(document.getElementById('topButtonImg'), url); } };
-  </script>
 </body>
 </html>
