@@ -387,20 +387,10 @@
 
     /* ================= SUCCESS OVERLAY ================= */
     function showSuccessOverlay(){
-      const o = document.createElement('div');
-      o.className = 'overlay';
-      o.innerHTML = `
-        <div class="card">
-          <h2 style="margin:0 0 6px 0">Nachricht gesendet 🎉</h2>
-          <div style="margin-bottom:12px;color:rgba(255,255,255,0.9)">Danke — deine anonyme Nachricht wurde übermittelt.</div>
-          <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-            <button id="againBtn" class="send" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white);">Noch eine senden</button>
-            <a id="whatsappLink" href="${WHATSAPP_CHANNEL}" target="_blank" rel="noopener noreferrer">
-              <button class="send" style="background:var(--accent);">Sandros WhatsApp Kanal besuchen</button>
-            </a>
-          </div>
-        </div>
-      `;
+  const o = document.createElement('div');
+  o.className = 'overlay';
+  o.innerHTML = `<div class="card"><h2 style="margin:0 0 6px 0">Nachricht gesendet 🎉</h2><div style="margin-bottom:12px;color:rgba(255,255,255,0.9)">Danke — deine anonyme Nachricht wurde übermittelt.</div><div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap"><button id="againBtn" class="send" style="background:transparent;border:1px solid rgba(255,255,255,0.06);color:var(--white);">Noch eine senden</button><a id="whatsappLink" href="${WHATSAPP_CHANNEL}" target="_blank" rel="noopener noreferrer"><button class="send" style="background:var(--accent);">Sandros WhatsApp Kanal besuchen</button></a></div></div>`;
+}
       document.body.appendChild(o);
 
       document.getElementById('againBtn').addEventListener('click', ()=> {
